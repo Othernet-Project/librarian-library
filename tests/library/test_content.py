@@ -57,7 +57,6 @@ def mock_scan(path):
     if contents is None:
         raise OSError()
     contents = [mock_direntry(n, base_path) for n in contents]
-    print(path, contents)
     return contents
 
 
