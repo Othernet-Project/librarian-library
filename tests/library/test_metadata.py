@@ -135,7 +135,7 @@ def test_clean_keys():
 @mock.patch.object(mod.validator, 'validate')
 def test_process_meta_success(validate, replace_aliases, add_missing_keys,
                               clean_keys):
-    meta = {'title': 'test'}
+    meta = {'title': 'test', 'gen': 0}
     validate.return_value = {}
     assert mod.process_meta(meta) == meta
     validate.assert_called_once_with(meta, broadcast=True)
@@ -150,7 +150,7 @@ def test_process_meta_success(validate, replace_aliases, add_missing_keys,
 @mock.patch.object(mod.validator, 'validate')
 def test_process_meta_fail(validate, replace_aliases, add_missing_keys,
                            clean_keys):
-    meta = {'title': 'test'}
+    meta = {'title': 'test', 'gen': 0}
     validate.return_value = {'error': 'some'}
     with pytest.raises(mod.MetadataError):
         mod.process_meta(meta)

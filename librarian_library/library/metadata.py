@@ -18,6 +18,8 @@ import scandir
 
 from outernet_metadata import validator
 
+from . import adapters
+
 
 CONTENT_TYPES = {
     'generic': 1,
@@ -100,7 +102,35 @@ def clean_keys(meta):
             del meta[key]
 
 
+def detect_generation(meta):
+    """ Detect metadata generation, if not available try to guess it. """
+    try:
+        return meta['gen']
+    except KeyError:
+        if 'index' in meta or 'keep_formatting' in meta:
+            return adapters.G0
+
+        raise MetadataError("Unrecognized metadata.",
+                            ["Metadata version cannot be detected."])
+
+
+def upgrade_meta(meta):
+    """ Convert metadata structure to latest specification. """
+    is_latest = False
+    while not is_latest:
+        meta_gen = detect_generation(meta)
+        try:
+            upgrade_fn = adapters.MAP[meta_gen]
+        except KeyError:
+            is_latest = True
+        else:
+            upgrade_fn(meta)
+
+
 def process_meta(meta):
+    # attempt bringing metadata up to latest specification before passing it to
+    # the validator
+    upgrade_meta(meta)
     failed = validator.validate(meta, broadcast=True)
     if failed:
         keys = ', '.join(failed.keys())
