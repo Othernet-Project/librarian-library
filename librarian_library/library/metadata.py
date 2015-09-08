@@ -107,8 +107,10 @@ def detect_generation(meta):
     try:
         return meta['gen']
     except KeyError:
-        if 'index' in meta or 'keep_formatting' in meta:
-            return adapters.G0
+        for identier_fn in adapters.IDENTIFIERS:
+            meta_gen = identier_fn(meta)
+            if meta_gen is not None:
+                return meta_gen
 
         raise MetadataError("Unrecognized metadata.",
                             ["Metadata version cannot be detected."])

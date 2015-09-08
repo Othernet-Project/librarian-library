@@ -1,6 +1,9 @@
 import gen0
 
-G0 = 0
+
+IDENTIFIERS = (
+    gen0.get_generation,
+)
 MAP = {
-    G0: gen0.upgrade_to_next
+    gen0.G0: gen0.upgrade_to_next
 }
