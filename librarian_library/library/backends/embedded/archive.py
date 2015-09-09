@@ -165,7 +165,7 @@ class EmbeddedArchive(BaseArchive):
                            sets='zipballs',
                            where='disabled = 0')
         self._query(q, terms, tag, lang, content_type)
-        return len(self.many)
+        return self.db.result.count
 
     def get_content(self, terms=None, offset=0, limit=0, tag=None, lang=None,
                     content_type=None):
