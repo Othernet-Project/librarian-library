@@ -30,13 +30,21 @@ from ..paginator import Paginator
 
 
 @cached(prefix='content', timeout=300)
-def filter_content(query, lang, tag, content_type):
+def content_count(query, lang, tag, content_type):
+    archive = open_archive()
+    return archive.get_count(query, lang, tag, content_type)
+
+
+@cached(prefix='content', timeout=300)
+def filter_content(query, lang, tag, content_type, offset, limit):
     conf = request.app.config
     archive = open_archive()
     raw_metas = archive.get_content(terms=query,
                                     lang=lang,
                                     tag=tag,
-                                    content_type=content_type)
+                                    content_type=content_type,
+                                    offset=offset,
+                                    limit=limit)
     contentdir = conf['library.contentdir']
     metas = [metadata.Meta(meta, content.to_path(meta['md5'], contentdir))
              for meta in raw_metas]
@@ -72,9 +80,15 @@ def content_list():
     page = Paginator.parse_page(request.params)
     per_page = Paginator.parse_per_page(request.params)
     # get content list filtered by above parsed filter params
-    metas = filter_content(query, lang, tag, content_type)
-    pager = Paginator(metas, page, per_page)
-    return dict(metadata=pager.items,
+    item_count = content_count(query, lang, tag, content_type)
+    metas = filter_content(query,
+                           lang,
+                           tag,
+                           content_type,
+                           offset=page - 1,
+                           limit=per_page)
+    pager = Paginator(range(item_count), page, per_page)
+    return dict(metadata=metas,
                 pager=pager,
                 vals=request.params.decode(),
                 query=query,
