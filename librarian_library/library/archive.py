@@ -240,12 +240,24 @@ class BaseArchive(object):
         else:
             return True
 
+    def __drop_if_does_not_exist(self, meta, key, content_path):
+        """Check if the file specified in `meta` under `key` exists in the
+        content folder and drop `key` from `meta` in case it doesn't."""
+        path = meta.get(key)
+        if path and not os.path.exists(os.path.join(content_path, path)):
+            meta.pop(key, None)
+
     def __add_auto_fields(self, meta, contentdir, content_id):
         # add auto-generated values to metadata before writing into db
         meta['md5'] = content_id
         meta['updated'] = datetime.datetime.now()
         meta['size'] = content.get_content_size(contentdir, content_id)
         meta['content_type'] = metadata.determine_content_type(meta)
+        # if cover or thumb images do not exist, avoid later filesystem lookups
+        # by not writing the default paths into the storage
+        content_path = content.to_path(content_id, prefix=contentdir)
+        for key in ('cover', 'thumb'):
+            self.__drop_if_does_not_exist(meta, key, content_path)
 
     def extract_zipball(self, zip_path, contentdir):
         """Extract zipball found on `zip_path` into `contentdir`.
