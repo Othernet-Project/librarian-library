@@ -13,7 +13,7 @@ EXPORTS = {
 
 def content_resolver_plugin(supervisor):
     """Load content based on the requested domain"""
-    root_url = supervisor.config['app.root_url'],
+    root_url = supervisor.config['app.root_url']
     ip_range = IPv4Range(*supervisor.config['app.ap_client_ip_range'])
 
     def decorator(callback):
