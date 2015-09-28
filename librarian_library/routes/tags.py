@@ -14,9 +14,9 @@ from bottle import request, redirect
 from bottle_utils.ajax import roca_view
 from bottle_utils.i18n import i18n_url
 
+from librarian_content.decorators import with_meta
 from librarian_core.contrib.templates.renderer import template
 
-from ..decorators import with_content
 from ..helpers import open_archive
 
 
@@ -42,7 +42,7 @@ def tag_cloud():
     return dict(tag_cloud=tags, tag=current, base_path=base_path)
 
 
-@with_content
+@with_meta
 def edit_tags(meta):
     base_path = request.params.get('base_path')
     tags = request.forms.getunicode('tags', '')

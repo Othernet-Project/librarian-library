@@ -8,25 +8,25 @@ This software is free software licensed under the terms of GPLv3. See COPYING
 file that comes with the source code, or http://www.gnu.org/licenses/gpl.txt.
 """
 
-import functools
 import os
 
-from bottle import request, abort, static_file
+from bottle import request, redirect, abort
 from bottle_utils.ajax import roca_view
-from bottle_utils.csrf import csrf_protect, csrf_token
+from bottle_utils.html import set_qparam
 from bottle_utils.i18n import lazy_gettext as _, i18n_url
-from fdsend import send_file
 
-from librarian_auth.decorators import login_required
 from librarian_cache.decorators import cached
-from librarian_core.contrib.templates.renderer import template, view
+from librarian_content.decorators import with_meta
+from librarian_content.library import metadata
+from librarian_core.contrib.templates.renderer import template
 
-from ..decorators import with_content
 from ..helpers import open_archive
-from ..library import content
-from ..library import metadata
-from ..library import zipballs
 from ..paginator import Paginator
+
+
+CONTENT_TYPE_EXTENSION_MAP = {
+    'video': ['mp4', 'wmv', 'webm', 'flv', 'ogv']
+}
 
 
 @cached(prefix='content', timeout=300)
@@ -45,10 +45,10 @@ def filter_content(query, lang, tag, content_type, offset, limit):
                                     content_type=content_type,
                                     offset=offset,
                                     limit=limit)
-    contentdir = conf['library.contentdir']
-    metas = [metadata.Meta(meta, content.to_path(meta['md5'], contentdir))
-             for meta in raw_metas]
-    return metas
+    get_content_path = lambda relpath: os.path.join(conf['library.contentdir'],
+                                                    relpath)
+    return [metadata.Meta(meta, get_content_path(meta['path']))
+            for meta in raw_metas]
 
 
 @roca_view('content_list', '_content_list', template_func=template)
@@ -102,86 +102,28 @@ def content_list():
                 view=request.params.get('view'))
 
 
-def guard_already_removed(func):
-    @functools.wraps(func)
-    def wrapper(content_id, **kwargs):
-        archive = open_archive()
-        content = archive.get_single(content_id)
-        if not content:
-            # Translators, used as page title when a content item's removal is
-            # retried, but it was already deleted before
-            title = _("Content already removed")
-            # Translators, used as message when a content item's removal is
-            # retried, but it was already deleted before
-            message = _("The specified content has already been removed.")
-            return template('feedback',
-                            status='success',
-                            page_title=title,
-                            message=message,
-                            redirect_url=i18n_url('content:list'),
-                            redirect_target=_("Library"))
-
-        return func(content=content, **kwargs)
-    return wrapper
+def content_type_for(extension):
+    for ct, ext_list in CONTENT_TYPE_EXTENSION_MAP.items():
+        if extension in ext_list:
+            return ct
 
 
-@login_required(next_to='/')
-@csrf_token
-@guard_already_removed
-@view('remove_confirm')
-def remove_content_confirm(content):
-    return dict(item_name=content['title'],
-                cancel_url=i18n_url('content:list'))
+def pick_opener(meta, content_type):
+    for filename, size in meta.files:
+        name, ext = os.path.splitext(filename)
+        ext = ext.strip('.')
+        if content_type_for(ext) == content_type:
+            return request.app.supervisor.exts.openers.first(ext)
+
+    # no match found, return default opener for simple downloads
+    return request.app.supervisor.exts.openers.get('*')
 
 
-@login_required(next_to='/')
-@csrf_protect
-@guard_already_removed
-@view('feedback')
-def remove_content(content):
-    """ Delete a single piece of content from archive """
+@with_meta
+def content_detail(meta):
+    """Update view statistics and redirect to an opener."""
     archive = open_archive()
-    archive.remove_from_archive([content.md5])
-    request.app.supervisor.exts.cache.invalidate(prefix='content')
-    # Translators, used as page title of successful content removal feedback
-    page_title = _("Content removed")
-    # Translators, used as message of successful content removal feedback
-    message = _("Content successfully removed.")
-    return dict(status='success',
-                page_title=page_title,
-                message=message,
-                redirect_url=i18n_url('content:list'),
-                redirect_target=_("Library"))
-
-
-def content_file(content_path, filename):
-    """ Serve file from content directory with specified id """
-    # TODO: handle `keep_formatting` flag
-    content_dir = request.app.config['library.contentdir']
-    content_root = os.path.join(content_dir, content_path)
-    return static_file(filename, root=content_root)
-
-
-@cached(prefix='zipball')
-def prepare_zipball(content_id):
-    content_dir = request.app.config['library.contentdir']
-    zball = zipballs.create(content_id, content_dir)
-    return zball.getvalue()
-
-
-def content_zipball(content_id):
-    """ Serve zipball with specified id """
-    zball = zipballs.StringIO(prepare_zipball(content_id))
-    filename = '{0}.zip'.format(content_id)
-    return send_file(zball, filename, attachment=True)
-
-
-@view('reader')
-@with_content
-def content_reader(meta):
-    """ Loads the reader interface """
-    archive = open_archive()
-    archive.add_view(meta.md5)
+    archive.add_view(meta.path)
     # as mixed content is possible in zipballs, it is allowed to specify which
     # content type is being viewed now explicitly, falling back to the first
     # one found in the content object
@@ -191,7 +133,7 @@ def content_reader(meta):
         # not specified
         content_type = meta.content_type_names[0]
 
-    return dict(meta=meta,
-                base_path=i18n_url('content:list'),
-                chosen_content_type=content_type,
-                chosen_path=request.params.get('path'))
+    opener_id = pick_opener(meta, content_type)
+    url = i18n_url('opener:detail', opener_id=opener_id)
+    url += set_qparam(path=meta.path).to_qs()
+    return redirect(url)
