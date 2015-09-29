@@ -42,8 +42,8 @@ def tag_cloud():
     return dict(tag_cloud=tags, tag=current, base_path=base_path)
 
 
-@with_meta
-def edit_tags(meta):
+@with_meta()
+def edit_tags(path, meta):
     base_path = request.params.get('base_path')
     tags = request.forms.getunicode('tags', '')
     tags = split_tags(tags)

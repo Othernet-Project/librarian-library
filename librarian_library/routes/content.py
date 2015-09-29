@@ -25,6 +25,7 @@ from ..paginator import Paginator
 
 
 CONTENT_TYPE_EXTENSION_MAP = {
+    'html': ['html', 'htm'],
     'video': ['mp4', 'wmv', 'webm', 'flv', 'ogv']
 }
 
@@ -119,8 +120,8 @@ def pick_opener(meta, content_type):
     return request.app.supervisor.exts.openers.get('*')
 
 
-@with_meta
-def content_detail(meta):
+@with_meta()
+def content_detail(path, meta):
     """Update view statistics and redirect to an opener."""
     archive = open_archive()
     archive.add_view(meta.path)
@@ -134,6 +135,6 @@ def content_detail(meta):
         content_type = meta.content_type_names[0]
 
     opener_id = pick_opener(meta, content_type)
-    url = i18n_url('opener:detail', opener_id=opener_id)
-    url += set_qparam(path=meta.path).to_qs()
+    url = i18n_url('files:path', path=meta.path)
+    url += set_qparam(action='open', opener_id=opener_id).to_qs()
     return redirect(url)
