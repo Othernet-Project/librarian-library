@@ -24,12 +24,6 @@ from ..helpers import open_archive
 from ..paginator import Paginator
 
 
-CONTENT_TYPE_EXTENSION_MAP = {
-    'html': ['html', 'htm'],
-    'video': ['mp4', 'wmv', 'webm', 'flv', 'ogv']
-}
-
-
 @cached(prefix='content', timeout=300)
 def content_count(query, lang, tag, content_type):
     archive = open_archive()
@@ -103,21 +97,13 @@ def content_list():
                 view=request.params.get('view'))
 
 
-def content_type_for(extension):
-    for ct, ext_list in CONTENT_TYPE_EXTENSION_MAP.items():
-        if extension in ext_list:
-            return ct
-
-
-def pick_opener(meta, content_type):
-    for filename, size in meta.files:
-        name, ext = os.path.splitext(filename)
-        ext = ext.strip('.')
-        if content_type_for(ext) == content_type:
-            return request.app.supervisor.exts.openers.first(ext)
-
-    # no match found, return default opener for simple downloads
-    return request.app.supervisor.exts.openers.get('*')
+def pick_opener(content_type):
+    openers = request.app.supervisor.exts.openers
+    opener_id = openers.first_content_type(content_type)
+    if not opener_id:
+        # no match found, return default opener for simple downloads
+        opener_id = openers.get('*')
+    return opener_id
 
 
 @with_meta()
@@ -134,7 +120,7 @@ def content_detail(path, meta):
         # not specified
         content_type = meta.content_type_names[0]
 
-    opener_id = pick_opener(meta, content_type)
+    opener_id = pick_opener(content_type)
     url = i18n_url('files:path', path=meta.path)
     url += set_qparam(action='open', opener_id=opener_id).to_qs()
     return redirect(url)
