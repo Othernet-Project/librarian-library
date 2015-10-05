@@ -15,9 +15,9 @@ from bottle_utils.ajax import roca_view
 from bottle_utils.html import set_qparam
 from bottle_utils.i18n import lazy_gettext as _, i18n_url
 
-from librarian_cache.decorators import cached
 from librarian_content.decorators import with_meta
 from librarian_content.library import metadata
+from librarian_core.contrib.cache.decorators import cached
 from librarian_core.contrib.templates.renderer import template
 
 from ..helpers import open_archive

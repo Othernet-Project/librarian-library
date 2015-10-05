@@ -24,8 +24,6 @@ setup(
         'bottle-fdsend',
         'outernet_metadata',
         'librarian_core',
-        'librarian_sqlite',
-        'librarian_cache',
         'librarian_menu',
         'librarian_auth',
         'librarian_setup',
@@ -33,8 +31,6 @@ setup(
     ],
     dependency_links=[
         'git+ssh://git@github.com/Outernet-Project/librarian-core.git#egg=librarian_core-0.1',
-        'git+ssh://git@github.com/Outernet-Project/librarian-sqlite.git#egg=librarian_sqlite-0.1',
-        'git+ssh://git@github.com/Outernet-Project/librarian-cache.git#egg=librarian_cache-0.1',
         'git+ssh://git@github.com/Outernet-Project/librarian-menu.git#egg=librarian_menu-0.1',
         'git+ssh://git@github.com/Outernet-Project/librarian-auth.git#egg=librarian_auth-0.1',
         'git+ssh://git@github.com/Outernet-Project/librarian-setup.git#egg=librarian_setup-0.1',

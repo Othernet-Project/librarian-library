@@ -17,8 +17,8 @@ from bottle_utils.common import unicode
 from bottle_utils.html import set_qparam
 from bottle_utils.i18n import i18n_url
 
-from librarian_cache.decorators import cached
 from librarian_content.library.archive import Archive
+from librarian_core.contrib.cache.decorators import cached
 from librarian_core.contrib.templates.decorators import template_helper
 
 from .consts import LICENSES
