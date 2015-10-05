@@ -20,9 +20,9 @@ from bottle_utils.i18n import i18n_url
 from librarian_content.library.archive import Archive
 from librarian_core.contrib.cache.decorators import cached
 from librarian_core.contrib.templates.decorators import template_helper
+from librarian_ui.lang import SELECT_LANGS
 
 from .consts import LICENSES
-from .lang import SELECT_LANGS
 
 
 def open_archive(config=None):
@@ -66,17 +66,6 @@ def content_languages():
 @template_helper
 def readable_license(license_code):
     return dict(LICENSES).get(license_code, LICENSES[0][1])
-
-
-@template_helper
-def i18n_attrs(lang):
-    s = ''
-    if lang:
-        # XXX: Do we want to keep the leading space?
-        s += ' lang="%s"' % lang
-    if template_helper.is_rtl(lang):
-        s += ' dir="rtl"'
-    return s
 
 
 @template_helper
