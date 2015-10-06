@@ -2,7 +2,7 @@ from .content import content_list, content_detail
 
 
 EXPORTS = {
-    'routes': {'required_by': ['librarian_system.routes.routes']}
+    'routes': {'required_by': ['librarian_core.contrib.system.routes.routes']}
 }
 
 
