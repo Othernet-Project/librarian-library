@@ -8,6 +8,6 @@ EXPORTS = {
 
 def routes(config):
     return (
-        ('content:list', content_list, 'GET', '/', {}),
+        ('content:list', content_list, 'GET', '/content/', {}),
         ('content:detail', content_detail, 'GET', '/content/<path:path>', {}),
     )
