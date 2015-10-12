@@ -1,7 +1,11 @@
 <%inherit file='/setup_base.tpl'/>
 
 <%block name="step_title">
-<h2>${_('Please set the current timezone.')}</h2>
+    <span class="icon icon-clock"></span> ${_('Timezone')}
+</%block>
+
+<%block name="step_desc">
+    <p>${_('Please select your local timezone.')}</p>
 </%block>
 
 <%block name="step">
@@ -16,8 +20,4 @@
         </div>
     </div>
 </div>
-</%block>
-
-<%block name="extra_scripts">
-<script type="text/javascript" src="${assets['js/setdt']}"></script>
 </%block>

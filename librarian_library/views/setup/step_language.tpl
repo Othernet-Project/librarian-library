@@ -1,8 +1,11 @@
 <%inherit file='/setup_base.tpl'/>
 
 <%block name="step_title">
-<p class="outernet-logo" lang="en" dir="ltr">Outernet</p>
-<h3>${_('Please select the interface language.')}</h3>
+    <span class="icon icon-comment-text-outline"></span> ${_('Default interface language')}
+</%block>
+
+<%block name="step_desc">
+    <p>${_('Please select the default interface language. This will be the starting user inteface language for all users. Users will be able to change it later.')}</p>
 </%block>
 
 <%block name="step">
