@@ -1,7 +1,7 @@
 <%inherit file='/setup/setup_base.tpl'/>
 
 <%block name="step_title">
-    <span class="icon icon-comment-text-outline"></span> ${_('Default interface language')}
+    <span class="icon icon-globe"></span> ${_('Default interface language')}
 </%block>
 
 <%block name="step_desc">
