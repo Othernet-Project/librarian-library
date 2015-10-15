@@ -1,61 +1,97 @@
-<%inherit file='base.tpl'/>
+<%inherit file='/base.tpl'/>
 <%namespace name='simple_pager' file='_simple_pager.tpl'/>
 <%namespace name='content_list' file='_content_list.tpl'/>
 <%namespace name='app_list' file='_app_list.tpl'/>
-<%namespace name='library_submenu' file='_library_submenu.tpl'/>
 <%namespace name='tag_js_templates' file='_tag_js_templates.tpl'/>
+
+<%namespace name="ui" file="/ui/widgets.tpl"/>
+
 <%block name="title">
 ## Translators, used as page title
 ${_('Library')}
 </%block>
 
-${library_submenu.body()}
+<%block name="extra_head">
+    <link rel="stylesheet" href="${assets['css/library']}">
+</%block>
 
-<div class="h-bar">
-    <form id="search" class="search">
+<%block name="menubar_panel">
+    <form id="library-search" class="o-multisearch o-panel">
+        <div class="o-panel">
+            ## Translators, used as label for search field, appears before the text box
+            <label for="q" class="o-multisearch-label">${_('Search in titles:')}</label>
+        </div>
+        <div class="o-panel">
+            ${h.vinput('q', vals, _class='search', _type='text', placeholder=_('search keywords'))}
+        </div>
+        ## The hidden inputs are placed in the markup so they are not first or 
+        ## last child of the conaining element. This is because in the 
+        ## multisearch layout, the first and last child are treated 
+        ## differently.
         ${h.vinput('t', vals, _type='hidden')}
         ${h.vinput('lang', vals, _type='hidden')}
         ${h.vinput('p', vals, _type='hidden')}
         ${h.vinput('pp', vals, _type='hidden')}
-        ## Translators, used as label for search field, appears before the text box
-        <label for="q"><span class="icon search">${_('Search')}</label>
-        ${h.vinput('q', vals, _class='search', _type='text', placeholder=_('Search titles'))}
-        <button class="primary">${_('Search')}</button>
+        <div class="o-panel">
+            <button id="files-multisearch-button" type="submit" class="o-multisearch-button">
+                ## Translators, used as button in content list
+                <span class="o-multisearch-button-label">${_('Start search')}</span>
+                <span class="o-multisearch-button-icon icon"></span>
+            </button>
+        </div>
     </form>
-    % if query:
+</%block>
+
+<%
+    clangs = th.content_languages()
+    has_clangs = len(clangs) > 1
+%>
+
+<%block name="context_menu">
+    ${ui.context_menu_separator()}
+    % if has_clangs:
+        ${ui.context_menu_submenu('clanguage', 'content-language', _('Content language'), 'file-globe')}
+    % endif
+    ${ui.context_menu_item('ctype-all', _('All content'), i18n_url('content:list'), enabled=chosen_content_type, direct=True)}
+    ${self.ctype_link('generic', _('General'), 'generic')}
+    ${self.ctype_link('html', _('Pages'), 'html')}
+    ${self.ctype_link('image', _('Images'), 'image')}
+    ${self.ctype_link('audio', _('Audio'), 'audio')}
+</%block>
+
+<nav id="content-language" class="o-context-menu o-context-menu-submenu" role="menu" aria-hidden="true">
+## Translators, label on back button that appears at the top of
+## context menu's submenu
+${ui.context_menu_back('context-menu', _('Back to menu'))}
+% for locale, label in clangs:
+    <% lang_url = i18n_url('content:list', lang=locale) %>
+    ${ui.context_menu_item('clang-{}'.format(locale), label, lang_url, enabled=locale != chosen_lang, direct=True)}
+% endfor
+</nav>
+
+<%def name="ctype_link(ctype, label, icon)">
+    ${ui.context_menu_item('ctype-{}'.format(ctype), label, i18n_url('content:list', content_type=ctype), icon, enabled=ctype != chosen_content_type, direct=True)}
+</%def>
+
+% if query:
     ## Translators, used as note on library page when showing search results, %(term)s represents the text typed in by user
     <p class="search-keyword">
     ${_("Showing search results for '%(terms)s'") % {'terms': query}}
     ## Translators, used as label for button that clears search results
     <a href="${i18n_path(request.path)}" class="button small secondary">${_('Clear')}</a>
     </p>
-    % endif
+% endif
+
+<div class="forms pager">
+    ${simple_pager.prev_next_pager()}
 </div>
 
-<div class="filters">
-    <div class="form langs">
-        % if len(th.content_languages()) > 1:
-        <form id="lang" class="downloads-langs">
-            <input type="hidden" name="q" value="${query or ''}">
-            <input type="hidden" name="t" value="${tag_id or ''}">
-            ${h.vselect('lang', th.content_languages(), lang)}
-            ## Translators, used as label for language filter button
-            <button class="fake-go">${_('Filter')}</button>
-            </p>
-        </form>
-        % endif
-    </div>
-    <div class="forms pager">
-        ${simple_pager.prev_next_pager()}
-    </div>
-    <div class="content-type">
-        <ul>
+<div class="content-type">
+    <ul>
+        % if chose_content_type:
             <li><a href="${i18n_path(request.path)}">${_("All")}</a></li>
-            % for content_type in content_types.keys():
-            <li><a href="${i18n_path(request.path) + h.set_qparam(content_type=content_type).to_qs()}">${content_type}</a></li>
-            % endfor
-        </ul>
-    </div>
+        % endif
+    </ul>
 </div>
 
 <ul id="content-list" class="content-list ${chosen_content_type or ''}" data-total="${int(pager.pages)}">
@@ -68,7 +104,7 @@ ${library_submenu.body()}
 
 % if not metadata:
     <p class="empty">
-    % if not query and not tag and not lang['lang']:
+    % if not query and not tag and not chosen_lang:
     ## Translators, used as note on library page when library is empty
     ${_('Content library is currently empty')}
     % elif query:
@@ -77,9 +113,9 @@ ${library_submenu.body()}
     % elif tag:
     ## Translators, used as not on library page when there is no content for given tag
     ${_("There are no results for '%(tag)s'") % {'tag': tag}}
-    % elif lang['lang']:
+    % elif chosen_lang:
     ## Translators, used as not on library page when there is no content for given language
-    ${_("Language filter for '%(lang)s' is active. Click %(link)s to see all content") % {'lang': th.lang_name_safe(lang['lang']), 'link': '<a href="%(path)s">%(label)s</a>' % {'path': i18n_url(request.path) + h.set_qparam(lang='').to_qs(), 'label': _('here')}}}
+    ${_("Language filter for '%(lang)s' is active. Click %(link)s to see all content") % {'lang': th.lang_name_safe(chosen_lang), 'link': '<a href="%(path)s">%(label)s</a>' % {'path': i18n_url(request.path) + h.set_qparam(lang='').to_qs(), 'label': _('here')}}}
     % endif
     </p>
 % endif

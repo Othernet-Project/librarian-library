@@ -46,7 +46,7 @@ def filter_content(query, lang, tag, content_type, offset, limit):
             for meta in raw_metas]
 
 
-@roca_view('content_list', '_content_list', template_func=template)
+@roca_view('library/content_list', 'library/_content_list', template_func=template)
 def content_list():
     """ Show list of content """
     # parse search query
@@ -87,7 +87,7 @@ def content_list():
                 pager=pager,
                 vals=request.params.decode(),
                 query=query,
-                lang=dict(lang=lang),
+                chosen_lang=lang,
                 content_types=metadata.CONTENT_TYPES,
                 chosen_content_type=content_type,
                 tag=tag_name,

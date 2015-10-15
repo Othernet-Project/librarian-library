@@ -28,7 +28,7 @@ def split_tags(tags):
     return set([WS.sub(' ', t) for t in tags if t])
 
 
-@roca_view('tag_cloud', '_tag_cloud', template_func=template)
+@roca_view('library/tag_cloud', 'library/_tag_cloud', template_func=template)
 def tag_cloud():
     # base_path is used to construct a link to content list or sites page
     # filtered by tag (see _tag_list.tpl).
