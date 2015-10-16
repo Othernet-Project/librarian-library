@@ -86,7 +86,7 @@ ${_('Library')}
             <li>
             <a href="${i18n_path(request.path)}">
                 <span class="icon icon-arrow-left"></span>
-                ${_("All")}
+                <span class="ctype-label">${_("All")}</span>
             </a>
             </li>
         % endif
