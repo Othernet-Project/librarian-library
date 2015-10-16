@@ -1,7 +1,5 @@
 <%inherit file='/base.tpl'/>
-<%namespace name='simple_pager' file='_simple_pager.tpl'/>
 <%namespace name='content_list' file='_content_list.tpl'/>
-
 <%namespace name="ui" file="/ui/widgets.tpl"/>
 <%namespace name="forms" file="/ui/forms.tpl"/>
 
@@ -105,10 +103,6 @@ ${_('Library')}
     ${content_list.body()}
     % endif
 </ul>
-
-<div class="forms pager">
-    ${simple_pager.prev_next_pager()}
-</div>
 
 <%block name="extra_scripts">
 <script src="${assets['js/content']}"></script>

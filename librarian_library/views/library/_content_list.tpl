@@ -1,3 +1,5 @@
+<%namespace name="ui_pager" file="/ui/pager.tpl"/>
+
 % if not metadata:
     <p class="empty">
     % if not query and not tag and not chosen_lang:
@@ -52,3 +54,5 @@
 
     </li>
 % endfor
+
+${ui_pager.pager_links(pager, _('Previous'), _('Next'))}
