@@ -39,16 +39,6 @@
         <div class="library-item-markers-date">
             <time datetime="${meta.timestamp.isoformat()[:-6]}Z" data-format="date">${meta.timestamp.strftime('%Y-%m-%d')}</time>
         </div>
-        <div class="library-item-markers-labels">
-            <span class="library-item-markers-types">
-                % for name in meta.content_type_names:
-                    <span class="icon icon-${name}"></span>
-                % endfor
-            </span>
-            <span class="library-item-markers-archive library-${meta.label}">
-                ${_(meta.label)}
-            </span>
-        </div>
     </div>
 
     <div class="library-item-attrib">

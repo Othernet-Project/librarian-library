@@ -1,10 +1,9 @@
 <%inherit file='/base.tpl'/>
 <%namespace name='simple_pager' file='_simple_pager.tpl'/>
 <%namespace name='content_list' file='_content_list.tpl'/>
-<%namespace name='app_list' file='_app_list.tpl'/>
-<%namespace name='tag_js_templates' file='_tag_js_templates.tpl'/>
 
 <%namespace name="ui" file="/ui/widgets.tpl"/>
+<%namespace name="forms" file="/ui/forms.tpl"/>
 
 <%block name="title">
 ## Translators, used as page title
@@ -77,12 +76,7 @@ ${_('Library')}
         <form method="get" action="${i18n_url('content:list')}">
             ${h.vinput('content_type', vals, _type='hidden')}
             ${h.vinput('p', vals, _type='hidden')}
-            <select name="language" id="language">
-                <option>${_('Language')}</option>
-                % for locale, label in clangs:
-                    <option val="${locale}">${label}</option>
-                % endfor
-            </select>
+            ${forms.select('language', clangs, _('Language'), 'content-')}
         </form>
     % endif
 
