@@ -97,15 +97,6 @@ def content_list():
                 view=request.params.get('view'))
 
 
-def pick_opener(content_type):
-    openers = request.app.supervisor.exts.openers
-    opener_id = openers.first(content_type=content_type)
-    if not opener_id:
-        # no match found, return default opener for simple downloads
-        opener_id = openers.get('*')
-    return opener_id
-
-
 @with_meta()
 def content_detail(path, meta):
     """Update view statistics and redirect to an opener."""
@@ -120,7 +111,14 @@ def content_detail(path, meta):
         # not specified
         content_type = meta.content_type_names[0]
 
-    opener_id = pick_opener(content_type)
     url = i18n_url('files:path', path=meta.path)
-    url += set_qparam(action='open', opener_id=opener_id).to_qs()
+    openers = request.app.supervisor.exts.openers
+    opener_id = openers.first(content_type=content_type)
+    # if there is no opener registered for this content_type, it will just
+    # redirect to the file manager
+    if opener_id:
+        # found registered opener for content_type, so use it for displaying
+        # the content item
+        url += set_qparam(action='open', opener_id=opener_id).to_qs()
+
     return redirect(url)
