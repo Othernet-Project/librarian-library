@@ -1,0 +1,199 @@
+/**
+ * This module contains base variables that are used to re-skin (customize) the 
+ * Librarian UI toolkit.
+ *
+ * Recommended way to customize the variables is to load a separate module 
+ * containing customized values _before_ this module.
+ */
+/**
+ * _media_query.scss: media query support
+ *
+ * Copyright 2014-2015, Outernet Inc.
+ * Some rights reserved.
+ *
+ * This software is free software licensed under the terms of GPLv3. See
+ * COPYING file that comes with the source code, or
+ * http://www.gnu.org/licenses/gpl.txt.
+ */
+/* line 27, ../../../src/scss/content_list.scss */
+.library-core {
+  background-color: #004f90;
+}
+
+/* line 27, ../../../src/scss/content_list.scss */
+.library-ephem {
+  background-color: #2d9000;
+}
+
+/* line 27, ../../../src/scss/content_list.scss */
+.library-community {
+  background-color: #90006a;
+}
+
+/* line 27, ../../../src/scss/content_list.scss */
+.library-partner {
+  background-color: #900000;
+}
+
+/* line 32, ../../../src/scss/content_list.scss */
+.library-list {
+  margin-left: 160px;
+}
+@media only screen and (max-width: 520px) {
+  /* line 32, ../../../src/scss/content_list.scss */
+  .library-list {
+    margin-left: 0;
+  }
+}
+
+/* line 40, ../../../src/scss/content_list.scss */
+.library-filterbar {
+  float: left;
+  width: 160px;
+  padding: 1rem 0.5rem 0 1rem;
+}
+/* line 45, ../../../src/scss/content_list.scss */
+.library-filterbar h2 {
+  font-size: 100%;
+  font-weight: bold;
+}
+/* line 50, ../../../src/scss/content_list.scss */
+.library-filterbar .icon {
+  font-size: 180%;
+}
+@media only screen and (max-width: 520px) {
+  /* line 40, ../../../src/scss/content_list.scss */
+  .library-filterbar {
+    float: none;
+    width: 100%;
+    padding: 1rem 1rem;
+    text-align: center;
+  }
+  /* line 60, ../../../src/scss/content_list.scss */
+  .library-filterbar h2 {
+    display: none;
+  }
+  /* line 64, ../../../src/scss/content_list.scss */
+  .library-filterbar li {
+    display: inline-block;
+    margin-right: 1rem;
+  }
+  /* line 69, ../../../src/scss/content_list.scss */
+  .library-filterbar form {
+    margin-bottom: 0.5rem;
+  }
+  /* line 73, ../../../src/scss/content_list.scss */
+  .library-filterbar .icon {
+    font-size: 240%;
+  }
+  /* line 77, ../../../src/scss/content_list.scss */
+  .library-filterbar .ctype-label {
+    display: none;
+  }
+}
+
+/* line 83, ../../../src/scss/content_list.scss */
+.library-item {
+  position: relative;
+  margin: 0.5rem 1rem;
+  padding-bottom: 0.5rem;
+  background: rgba(255, 255, 255, 0.75);
+  -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+}
+/* line 93, ../../../src/scss/content_list.scss */
+.library-item:first-child {
+  margin-top: 1rem;
+}
+/* line 97, ../../../src/scss/content_list.scss */
+.library-item:last-child {
+  margin-bottom: 1rem;
+}
+/* line 101, ../../../src/scss/content_list.scss */
+.library-item h2 {
+  font-size: 160%;
+  padding: 3rem 0.5rem 0.2rem;
+  margin-bottom: 0.2rem;
+}
+@media only screen and (max-width: 640px) {
+  /* line 101, ../../../src/scss/content_list.scss */
+  .library-item h2 {
+    font-size: 120%;
+  }
+}
+/* line 114, ../../../src/scss/content_list.scss */
+.library-item .library-item-markers {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2.5rem;
+}
+/* line 123, ../../../src/scss/content_list.scss */
+.library-item .library-item-markers-date {
+  line-height: 2.5rem;
+  display: inline-block;
+  height: 100%;
+  padding: 0 0.5rem;
+}
+/* line 127, ../../../src/scss/content_list.scss */
+.library-item .library-item-markers-labels {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+}
+/* line 135, ../../../src/scss/content_list.scss */
+.library-item .library-item-markers-archive {
+  text-transform: uppercase;
+  color: #fff;
+  -moz-border-radius-bottomleft: 0.3rem;
+  -webkit-border-bottom-left-radius: 0.3rem;
+  border-bottom-left-radius: 0.3rem;
+  line-height: 2.5rem;
+  display: inline-block;
+  height: 100%;
+  padding: 0 0.5rem;
+}
+/* line 146, ../../../src/scss/content_list.scss */
+.library-item .library-item-license {
+  text-align: left;
+  font-size: 80%;
+  text-transform: uppercase;
+  padding: 0 0.5rem;
+}
+/* line 156, ../../../src/scss/content_list.scss */
+.library-item .library-item-markers-types {
+  font-size: 180%;
+}
+/* line 160, ../../../src/scss/content_list.scss */
+.library-item .library-item-cover {
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-position: center center;
+  padding: 0;
+  border-bottom: 0;
+}
+/* line 169, ../../../src/scss/content_list.scss */
+.library-item .library-item-cover a {
+  display: block;
+  padding-top: 200px;
+  overflow: hidden;
+}
+/* line 175, ../../../src/scss/content_list.scss */
+.library-item .library-item-cover .library-item-title-text {
+  display: inline-block;
+  background: #fff;
+  padding: 0.5rem;
+  -moz-border-radius-topright: 0.3rem;
+  -webkit-border-top-right-radius: 0.3rem;
+  border-top-right-radius: 0.3rem;
+}
+/* line 184, ../../../src/scss/content_list.scss */
+.library-item.library-has-cover .library-item-markers {
+  background: #fff;
+  border-bottom: 2px solid #fff;
+}

@@ -1,0 +1,189 @@
+@import "compass/css3";
+@import "base/params";
+@import "base/media_query";
+@import "compass/typography/text/replacement";
+
+$library-infobar-height: 2.5rem;
+$library-ui-cutoff: 520px;
+$library-sidebar-width: 160px;
+
+@mixin library-infobar-item {
+  line-height: $library-infobar-height;
+
+  // Basic geometry
+  display: inline-block;
+  height: 100%;
+  padding: 0 0.5rem;
+}
+
+$library-archive-colors: (
+  core: #004f90,
+  ephem: #2d9000,
+  community: #90006a,
+  partner: #900000,
+);
+
+@each $archive, $archive-color in $library-archive-colors {
+  .library-#{$archive} {
+    background-color: $archive-color;
+  }
+}
+
+.library-list {
+  margin-left: $library-sidebar-width;
+
+  @include narrower-than($library-ui-cutoff) {
+    margin-left: 0;
+  }
+}
+
+.library-filterbar {
+  float: left;
+  width: $library-sidebar-width;
+  padding: 1rem 0.5rem 0 1rem;
+
+  h2 {
+    font-size: 100%;
+    font-weight: bold;
+  }
+
+  .icon {
+    font-size: 180%;
+  }
+
+  @include narrower-than($library-ui-cutoff) {
+    float: none;
+    width: 100%;
+    padding: 1rem 1rem;
+    text-align: center;
+
+    h2 {
+      display: none;
+    }
+
+    li {
+      display: inline-block;
+      margin-right: 1rem;
+    }
+
+    form {
+      margin-bottom: 0.5rem;
+    }
+
+    .icon {
+      font-size: 240%;
+    }
+
+    .ctype-label {
+      display: none;
+    }
+  }
+}
+
+.library-item {
+  // Basic geometry
+  position: relative;
+  margin: 0.5rem 1rem;
+  padding-bottom: 0.5rem;
+
+  // Styling
+  background: $o-thin-overlay-material;
+  @include box-shadow($o-thin-overlay-shadow);
+
+  &:first-child {
+    margin-top: 1rem;
+  }
+
+  &:last-child {
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    // Typography
+    font-size: 160%;
+
+    // Basic geometry
+    padding: $library-infobar-height * 1.2 0.5rem 0.2rem;
+    margin-bottom: 0.2rem;
+
+    @include narrower-than(640px) {
+      font-size: 120%;
+    }
+  }
+
+  .library-item-markers {
+    // Basic geometry
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: $library-infobar-height;
+  }
+
+  .library-item-markers-date {
+    @include library-infobar-item;
+  }
+
+  .library-item-markers-labels {
+    // Basic geometry
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+  }
+
+  .library-item-markers-archive {
+    // Typography
+    text-transform: uppercase;
+
+    // Styling
+    color: $o-negative-base;
+    @include border-bottom-left-radius($o-clickable-target-corner-radius);
+
+    @include library-infobar-item;
+  }
+
+  .library-item-license {
+    // Typography
+    text-align: left;
+    font-size: 80%;
+    text-transform: uppercase;
+
+    // Basic geometry
+    padding: 0 0.5rem;
+  }
+
+  .library-item-markers-types {
+    font-size: 180%;
+  }
+
+  .library-item-cover {
+    // Basic geometry
+
+    // Styling
+    @include background-size(cover);
+    background-position: center center;
+    padding: 0;
+    border-bottom: 0;
+
+    a {
+      display: block;
+      padding-top: 200px;
+      overflow: hidden;
+    }
+
+    .library-item-title-text {
+      display: inline-block;
+      background: $o-negative-base;
+      padding: 0.5rem;
+      @include border-top-right-radius($o-clickable-target-corner-radius);
+    }
+  }
+
+  &.library-has-cover {
+    .library-item-markers {
+      background: $o-negative-base;
+      border-bottom: 2px solid $o-negative-base;
+    }
+  }
+}
