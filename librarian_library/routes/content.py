@@ -99,7 +99,7 @@ def content_list():
 
 def pick_opener(content_type):
     openers = request.app.supervisor.exts.openers
-    opener_id = openers.first_content_type(content_type)
+    opener_id = openers.first(content_type=content_type)
     if not opener_id:
         # no match found, return default opener for simple downloads
         opener_id = openers.get('*')
