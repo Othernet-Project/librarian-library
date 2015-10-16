@@ -83,12 +83,18 @@ ${_('Library')}
     <h2>${_('Types of content')}</h2>
     <ul class="library-content-types">
         % if chosen_content_type:
-            <li><a href="${i18n_path(request.path)}">${_("All")}</a></li>
+            <li>
+            <a href="${i18n_path(request.path)}">
+                <span class="icon icon-arrow-left"></span>
+                ${_("All")}
+            </a>
+            </li>
         % endif
         ${self.ctype_link('generic', _('General'), 'generic')}
         ${self.ctype_link('html', _('Pages'), 'html')}
         ${self.ctype_link('image', _('Images'), 'image')}
         ${self.ctype_link('audio', _('Audio'), 'audio')}
+        ${self.ctype_link('video', _('Video'), 'video')}
     </ul>
 </div>
 

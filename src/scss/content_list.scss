@@ -103,49 +103,18 @@ $library-archive-colors: (
     font-size: 160%;
 
     // Basic geometry
-    padding: $library-infobar-height * 1.2 0.5rem 0.2rem;
+    padding: 1.5rem 0.5rem 0.2rem;
     margin-bottom: 0.2rem;
+    margin-top: 0;
 
     @include narrower-than(640px) {
       font-size: 120%;
     }
   }
 
-  .library-item-markers {
-    // Basic geometry
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: $library-infobar-height;
-  }
-
-  .library-item-markers-date {
-    @include library-infobar-item;
-  }
-
-  .library-item-markers-labels {
-    // Basic geometry
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-  }
-
-  .library-item-markers-archive {
-    // Typography
-    text-transform: uppercase;
-
-    // Styling
-    color: $o-negative-base;
-    @include border-bottom-left-radius($o-clickable-target-corner-radius);
-
-    @include library-infobar-item;
-  }
-
+  .library-item-date,
   .library-item-license {
     // Typography
-    text-align: left;
     font-size: 80%;
     text-transform: uppercase;
 
@@ -153,10 +122,7 @@ $library-archive-colors: (
     padding: 0 0.5rem;
   }
 
-  .library-item-markers-types {
-    font-size: 180%;
-  }
-
+    
   .library-item-cover {
     // Basic geometry
 

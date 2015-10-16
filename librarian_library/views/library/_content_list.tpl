@@ -35,23 +35,20 @@
         </a>
     </h2>
 
-    <div class="library-item-markers">
-        <div class="library-item-markers-date">
-            <time datetime="${meta.timestamp.isoformat()[:-6]}Z" data-format="date">${meta.timestamp.strftime('%Y-%m-%d')}</time>
-        </div>
-    </div>
-
-    <div class="library-item-attrib">
-
-    </div>
-    % if meta.license:
-        <p class="library-item-license">
-            % if meta.publisher:
-                ${meta.publisher | h} /
-            % endif
+    <div class="library-item-license">
+        % if meta.publisher:
+            ${meta.publisher | h} /
+        % endif
+        % if meta.license:
             ${th.readable_license(meta.license)}
-        </p>
-    % endif
+        % else:
+            ${_('All rights reserved')}
+        % endif
+    </div>
+
+    <div class="library-item-date">
+        <time datetime="${meta.timestamp.isoformat()[:-6]}Z" data-format="date">${meta.timestamp.strftime('%Y-%m-%d')}</time>
+    </div>
 
     </li>
 % endfor

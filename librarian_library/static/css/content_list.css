@@ -113,8 +113,9 @@
 /* line 101, ../../../src/scss/content_list.scss */
 .library-item h2 {
   font-size: 160%;
-  padding: 3rem 0.5rem 0.2rem;
+  padding: 1.5rem 0.5rem 0.2rem;
   margin-bottom: 0.2rem;
+  margin-top: 0;
 }
 @media only screen and (max-width: 640px) {
   /* line 101, ../../../src/scss/content_list.scss */
@@ -122,52 +123,14 @@
     font-size: 120%;
   }
 }
-/* line 114, ../../../src/scss/content_list.scss */
-.library-item .library-item-markers {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2.5rem;
-}
-/* line 123, ../../../src/scss/content_list.scss */
-.library-item .library-item-markers-date {
-  line-height: 2.5rem;
-  display: inline-block;
-  height: 100%;
-  padding: 0 0.5rem;
-}
-/* line 127, ../../../src/scss/content_list.scss */
-.library-item .library-item-markers-labels {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-}
-/* line 135, ../../../src/scss/content_list.scss */
-.library-item .library-item-markers-archive {
-  text-transform: uppercase;
-  color: #fff;
-  -moz-border-radius-bottomleft: 0.3rem;
-  -webkit-border-bottom-left-radius: 0.3rem;
-  border-bottom-left-radius: 0.3rem;
-  line-height: 2.5rem;
-  display: inline-block;
-  height: 100%;
-  padding: 0 0.5rem;
-}
-/* line 146, ../../../src/scss/content_list.scss */
+/* line 115, ../../../src/scss/content_list.scss */
+.library-item .library-item-date,
 .library-item .library-item-license {
-  text-align: left;
   font-size: 80%;
   text-transform: uppercase;
   padding: 0 0.5rem;
 }
-/* line 156, ../../../src/scss/content_list.scss */
-.library-item .library-item-markers-types {
-  font-size: 180%;
-}
-/* line 160, ../../../src/scss/content_list.scss */
+/* line 126, ../../../src/scss/content_list.scss */
 .library-item .library-item-cover {
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -177,13 +140,13 @@
   padding: 0;
   border-bottom: 0;
 }
-/* line 169, ../../../src/scss/content_list.scss */
+/* line 135, ../../../src/scss/content_list.scss */
 .library-item .library-item-cover a {
   display: block;
   padding-top: 200px;
   overflow: hidden;
 }
-/* line 175, ../../../src/scss/content_list.scss */
+/* line 141, ../../../src/scss/content_list.scss */
 .library-item .library-item-cover .library-item-title-text {
   display: inline-block;
   background: #fff;
@@ -192,7 +155,7 @@
   -webkit-border-top-right-radius: 0.3rem;
   border-top-right-radius: 0.3rem;
 }
-/* line 184, ../../../src/scss/content_list.scss */
+/* line 150, ../../../src/scss/content_list.scss */
 .library-item.library-has-cover .library-item-markers {
   background: #fff;
   border-bottom: 2px solid #fff;
