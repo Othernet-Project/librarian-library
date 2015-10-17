@@ -150,7 +150,6 @@ $library-archive-colors: (
       margin: 0 0.2rem;
     }
   }
-
     
   .library-item-cover {
     // Basic geometry
@@ -182,3 +181,21 @@ $library-archive-colors: (
     }
   }
 }
+
+.search-keyword {
+  // Typography
+  font-size: 120%;
+
+  // Basic geometry
+  padding: 1rem;
+
+  // Styling
+  background: $o-friendly;
+  color: $o-negative-base;
+
+  a {
+    display: inline-block;
+    margin-left: 0.5rem;
+  }
+}
+

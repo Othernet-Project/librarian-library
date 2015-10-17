@@ -16,7 +16,7 @@ ${_('Library')}
     <form id="library-search" class="o-multisearch o-panel">
         <div class="o-panel">
             ## Translators, used as label for search field, appears before the text box
-            <label for="q" class="o-multisearch-label">${_('Search in titles:')}</label>
+            <label for="q" class="o-multisearch-label">${_('Search:')}</label>
         </div>
         <div class="o-panel">
             ${h.vinput('q', vals, _class='search', _type='text', placeholder=_('search keywords'))}
@@ -41,15 +41,6 @@ ${_('Library')}
     clangs = th.content_languages()
     has_clangs = len(clangs) > 1
 %>
-
-% if query:
-    ## Translators, used as note on library page when showing search results, %(term)s represents the text typed in by user
-    <p class="search-keyword">
-    ${_("Showing search results for '%(terms)s'") % {'terms': query}}
-    ## Translators, used as label for button that clears search results
-    <a href="${i18n_path(request.path)}" class="button small secondary">${_('Clear')}</a>
-    </p>
-% endif
 
 <%def name="ctype_link(ctype, label, icon)">
     <li>

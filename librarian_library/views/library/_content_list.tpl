@@ -2,19 +2,31 @@
 
 % if not metadata:
     <p class="empty">
-    % if not query and not tag and not chosen_lang:
-    ## Translators, used as note on library page when library is empty
-    ${_('Content library is currently empty')}
-    % elif query:
-    ## Translators, used as note on library page when search does not return anything
-    ${_("There are no search results for '%(terms)s'") % {'terms': query}}
-    % elif tag:
-    ## Translators, used as not on library page when there is no content for given tag
-    ${_("There are no results for '%(tag)s'") % {'tag': tag}}
-    % elif chosen_lang:
-    ## Translators, used as not on library page when there is no content for given language
-    ${_("Language filter for '%(lang)s' is active. Click %(link)s to see all content") % {'lang': th.lang_name_safe(chosen_lang), 'link': '<a href="%(path)s">%(label)s</a>' % {'path': i18n_url(request.path) + h.set_qparam(lang='').to_qs(), 'label': _('here')}}}
-    % endif
+        % if not query and not tag and not chosen_lang:
+            ## Translators, used as note on library page when library is empty
+            ${_('Content library is currently empty')}
+        % elif query:
+            ## Translators, used as note on library page when search does not return anything
+            ${_("There are no search results for '%(terms)s'") % {'terms': query}}
+        % elif tag:
+            ## Translators, used as not on library page when there is no content for given tag
+            ${_("There are no results for '%(tag)s'") % {'tag': tag}}
+        % elif chosen_lang:
+            ## Translators, used as not on library page when there is no content for given language
+            ${_("Language filter for '%(lang)s' is active. Click %(link)s to see all content") % {'lang': th.lang_name_safe(chosen_lang), 'link': '<a href="%(path)s">%(label)s</a>' % {'path': i18n_url(request.path) + h.set_qparam(lang='').to_qs(), 'label': _('here')}}}
+        % endif
+    </p>
+    ## Bail out of template early
+    <% return '' %>
+% endif
+
+% if query:
+    <p class="library-item search-keyword">
+        ## Translators, used as note on library page when showing search
+        ## results, {term} represents the text typed in by user
+        ${_("Showing search results for '{term}'").format(term=query)}
+        ## Translators, used as label for button that clears search results
+        <a href="${i18n_path(request.path)}" class="button small secondary">${_('Clear')}</a>
     </p>
 % endif
 

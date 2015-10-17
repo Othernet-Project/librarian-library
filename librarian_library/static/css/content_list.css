@@ -157,7 +157,7 @@
   text-decoration: underline;
   margin: 0 0.2rem;
 }
-/* line 155, ../../../src/scss/content_list.scss */
+/* line 154, ../../../src/scss/content_list.scss */
 .library-item .library-item-cover {
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -167,13 +167,13 @@
   padding: 0;
   border-bottom: 0;
 }
-/* line 164, ../../../src/scss/content_list.scss */
+/* line 163, ../../../src/scss/content_list.scss */
 .library-item .library-item-cover a {
   display: block;
   padding-top: 200px;
   overflow: hidden;
 }
-/* line 170, ../../../src/scss/content_list.scss */
+/* line 169, ../../../src/scss/content_list.scss */
 .library-item .library-item-cover .library-item-title-text {
   display: inline-block;
   background: #fff;
@@ -182,8 +182,21 @@
   -webkit-border-top-right-radius: 0.3rem;
   border-top-right-radius: 0.3rem;
 }
-/* line 179, ../../../src/scss/content_list.scss */
+/* line 178, ../../../src/scss/content_list.scss */
 .library-item.library-has-cover .library-item-markers {
   background: #fff;
   border-bottom: 2px solid #fff;
+}
+
+/* line 185, ../../../src/scss/content_list.scss */
+.search-keyword {
+  font-size: 120%;
+  padding: 1rem;
+  background: #5d7b0a;
+  color: #fff;
+}
+/* line 196, ../../../src/scss/content_list.scss */
+.search-keyword a {
+  display: inline-block;
+  margin-left: 0.5rem;
 }
