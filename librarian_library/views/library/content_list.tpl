@@ -79,11 +79,11 @@ ${_('Library')}
             </a>
             </li>
         % endif
-        ${self.ctype_link('generic', _('General'), 'generic')}
         ${self.ctype_link('html', _('Pages'), 'html')}
         ${self.ctype_link('image', _('Images'), 'image')}
         ${self.ctype_link('audio', _('Audio'), 'audio')}
         ${self.ctype_link('video', _('Video'), 'video')}
+        ${self.ctype_link('generic', _('Files'), 'generic')}
     </ul>
 </div>
 
