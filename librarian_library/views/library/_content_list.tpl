@@ -1,13 +1,19 @@
 <%namespace name="ui_pager" file="/ui/pager.tpl"/>
 
+<%def name="search_clear()">
+    ## Translators, used as label for button that clears search results
+    <a href="${i18n_url('content:list')}" class="button">${_('Clear')}</a>
+</%def>
+
 % if not metadata:
-    <p class="empty">
+    <p class="library-item search-empty">
         % if not query and not tag and not chosen_lang:
             ## Translators, used as note on library page when library is empty
             ${_('Content library is currently empty')}
         % elif query:
             ## Translators, used as note on library page when search does not return anything
             ${_("There are no search results for '%(terms)s'") % {'terms': query}}
+            ${self.search_clear()}
         % elif tag:
             ## Translators, used as not on library page when there is no content for given tag
             ${_("There are no results for '%(tag)s'") % {'tag': tag}}
@@ -25,8 +31,7 @@
         ## Translators, used as note on library page when showing search
         ## results, {term} represents the text typed in by user
         ${_("Showing search results for '{term}'").format(term=query)}
-        ## Translators, used as label for button that clears search results
-        <a href="${i18n_path(request.path)}" class="button small secondary">${_('Clear')}</a>
+        ${self.search_clear()}
     </p>
 % endif
 

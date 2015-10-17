@@ -182,7 +182,8 @@ $library-archive-colors: (
   }
 }
 
-.search-keyword {
+.search-keyword,
+.search-empty {
   // Typography
   font-size: 120%;
 
@@ -190,12 +191,30 @@ $library-archive-colors: (
   padding: 1rem;
 
   // Styling
-  background: $o-friendly;
   color: $o-negative-base;
 
   a {
     display: inline-block;
     margin-left: 0.5rem;
   }
+
+  @include narrower-than(520px) {
+    text-align: center;
+
+    a {
+      display: block;
+      margin: 1rem 0 0;
+      width: 100%;
+    }
+  }
 }
 
+.search-keyword {
+  // Styling
+  background: $o-friendly;
+}
+
+.search-empty {
+  // Styling
+  background: $o-warning;
+}

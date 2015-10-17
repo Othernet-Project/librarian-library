@@ -189,14 +189,39 @@
 }
 
 /* line 185, ../../../src/scss/content_list.scss */
-.search-keyword {
+.search-keyword,
+.search-empty {
   font-size: 120%;
   padding: 1rem;
-  background: #5d7b0a;
   color: #fff;
 }
 /* line 196, ../../../src/scss/content_list.scss */
-.search-keyword a {
+.search-keyword a,
+.search-empty a {
   display: inline-block;
   margin-left: 0.5rem;
+}
+@media only screen and (max-width: 520px) {
+  /* line 185, ../../../src/scss/content_list.scss */
+  .search-keyword,
+  .search-empty {
+    text-align: center;
+  }
+  /* line 204, ../../../src/scss/content_list.scss */
+  .search-keyword a,
+  .search-empty a {
+    display: block;
+    margin: 1rem 0 0;
+    width: 100%;
+  }
+}
+
+/* line 212, ../../../src/scss/content_list.scss */
+.search-keyword {
+  background: #5d7b0a;
+}
+
+/* line 217, ../../../src/scss/content_list.scss */
+.search-empty {
+  background: #efa417;
 }
