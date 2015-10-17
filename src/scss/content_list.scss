@@ -87,12 +87,16 @@ $library-archive-colors: (
 .library-item {
   // Basic geometry
   position: relative;
-  margin: 0.5rem 1rem 1rem;
+  margin: 2rem 1rem;
   padding-bottom: 0.5rem;
 
   // Styling
   background: $o-thin-overlay-material;
   @include box-shadow($o-thin-overlay-shadow);
+
+  @include narrower-than($library-ui-cutoff) {
+    margin: 1rem 0;
+  }
 
   &:first-child {
     margin-top: 1rem;
@@ -108,7 +112,7 @@ $library-archive-colors: (
 
     // Basic geometry
     padding: 1.5rem 0.5rem 0.2rem;
-    margin-bottom: 0.2rem;
+    margin-bottom: 1rem;
     margin-top: 0;
 
     @include narrower-than(640px) {
@@ -116,14 +120,35 @@ $library-archive-colors: (
     }
   }
 
-  .library-item-date,
-  .library-item-license {
+  .library-item-metadata {
     // Typography
-    font-size: 80%;
     text-transform: uppercase;
 
     // Basic geometry
     padding: 0 0.5rem;
+
+    time {
+      font-weight: bold;
+    }
+  }
+
+  .library-item-keywords {
+    // Basic geometry
+    padding: 0 0.5rem;
+    margin-bottom: 0.5rem;
+
+    .label {
+      text-transform: uppercase;
+      margin-right: 0.2rem;
+    }
+
+    a {
+      // Typography
+      text-decoration: underline;
+
+      // Basic geometry
+      margin: 0 0.2rem;
+    }
   }
 
     

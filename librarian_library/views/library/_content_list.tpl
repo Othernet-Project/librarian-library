@@ -32,14 +32,15 @@
             style="background-image: url('${url('files:direct', path=th.join(meta.path, meta.cover))}');"
         % endif
         >
-        <a href="${content_url}" tabindex="${loop.index + 1}">
+        <a href="${content_url}" tabindex="${loop.index + 1}" class="library-item-link">
             <span class="library-item-title-text">${meta.title | h}</span>
         </a>
     </h2>
 
-    <div class="library-item-license">
+    <div class="library-item-metadata">
+        <time datetime="${meta.timestamp.isoformat()[:-6]}Z" data-format="date">${meta.timestamp.strftime('%Y-%m-%d')}</time>
         % if meta.publisher:
-            ${meta.publisher | h} /
+            / ${meta.publisher | h} /
         % endif
         % if meta.license:
             ${th.readable_license(meta.license)}
@@ -48,9 +49,15 @@
         % endif
     </div>
 
-    <div class="library-item-date">
-        <time datetime="${meta.timestamp.isoformat()[:-6]}Z" data-format="date">${meta.timestamp.strftime('%Y-%m-%d')}</time>
-    </div>
+    % if meta.keywords:
+        <div class="library-item-keywords">
+            ## Translators, appears as label for the list of content keywords
+            <span class="label">${_('Topics:')}</span>
+            % for kw in meta.keywords.split(','):
+                <a href="${i18n_url('content:list', q=kw)}" class="list-item-keyword">${kw.strip()}</a>
+            % endfor
+        </div>
+    % endif
 
     </li>
 % endfor

@@ -122,4 +122,7 @@ def content_detail(path, meta):
         # the content item
         url += set_qparam(action='open', opener_id=opener_id).to_qs()
 
+    if request.is_xhr:
+        return url
+
     return redirect(url)
