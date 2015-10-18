@@ -17,7 +17,7 @@
     res = $.get href
     res.done (url) ->
       # Now load the obtained URL into modal
-      $.modalContent url
+      $.modalContent url, fullScreen: true
     res.fail () ->
       # Oops, URL couldn't be fetched, show error message
       $.modalDialog templates.loadFailure

@@ -14,7 +14,9 @@
     href = link.attr('href');
     res = $.get(href);
     res.done(function(url) {
-      return $.modalContent(url);
+      return $.modalContent(url, {
+        fullScreen: true
+      });
     });
     res.fail(function() {
       return $.modalDialog(templates.loadFailure);
