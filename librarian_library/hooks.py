@@ -1,9 +1,9 @@
 from . import setup
-from .menuitems import ContentMenuItem
+from .menuitems import LibraryMenuItem
 
 
 def initialize(supervisor):
-    supervisor.exts.menuitems.register(ContentMenuItem)
+    supervisor.exts.menuitems.register(LibraryMenuItem)
     # register setup wizard step
     setup_wizard = supervisor.exts.setup_wizard
     setup_wizard.register('language',
