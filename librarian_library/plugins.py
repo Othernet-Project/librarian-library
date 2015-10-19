@@ -1,3 +1,5 @@
+import logging
+
 from functools import wraps
 
 from bottle import request, redirect
@@ -14,9 +16,15 @@ EXPORTS = {
 def content_resolver_plugin(supervisor):
     """Load content based on the requested domain"""
     root_url = supervisor.config['app.root_url']
-    ip_range = IPv4Range(*supervisor.config['app.ap_client_ip_range'])
+    ip_addresses = supervisor.config['app.ap_client_ip_range']
+    ip_range = IPv4Range(*ip_addresses) if ip_addresses else None
 
     def decorator(callback):
+        if not ip_range:
+            logging.warning("Content resolver plugin not loaded due to missing"
+                            " IP configuration.")
+            return callback
+
         @wraps(callback)
         def wrapper(*args, **kwargs):
             target_host = get_target_host()
