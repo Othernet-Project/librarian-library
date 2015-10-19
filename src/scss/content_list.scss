@@ -1,0 +1,220 @@
+@import "compass/css3";
+@import "base/params";
+@import "base/media_query";
+@import "compass/typography/text/replacement";
+
+$library-infobar-height: 2.5rem;
+$library-ui-cutoff: 520px;
+$library-sidebar-width: 160px;
+
+@mixin library-infobar-item {
+  line-height: $library-infobar-height;
+
+  // Basic geometry
+  display: inline-block;
+  height: 100%;
+  padding: 0 0.5rem;
+}
+
+$library-archive-colors: (
+  core: #004f90,
+  ephem: #2d9000,
+  community: #90006a,
+  partner: #900000,
+);
+
+@each $archive, $archive-color in $library-archive-colors {
+  .library-#{$archive} {
+    background-color: $archive-color;
+  }
+}
+
+.library-list {
+  margin-left: $library-sidebar-width;
+
+  @include narrower-than($library-ui-cutoff) {
+    margin-left: 0;
+  }
+}
+
+.library-filterbar {
+  float: left;
+  width: $library-sidebar-width;
+  padding: 1rem 0.5rem 0 1rem;
+
+  h2 {
+    font-size: 100%;
+    font-weight: bold;
+  }
+
+  li {
+    margin: 1.2rem 0;
+  }
+
+  .icon {
+    font-size: 240%;
+  }
+
+  @include narrower-than($library-ui-cutoff) {
+    float: none;
+    width: 100%;
+    padding: 1rem 1rem;
+    text-align: center;
+
+    h2 {
+      display: none;
+    }
+
+    li {
+      display: inline-block;
+      margin-right: 1rem;
+    }
+
+    form {
+      margin-bottom: 0.5rem;
+    }
+
+    .icon {
+      font-size: 240%;
+    }
+
+    .ctype-label {
+      display: none;
+    }
+  }
+}
+
+.library-item {
+  // Basic geometry
+  position: relative;
+  margin: 2rem 1rem;
+  padding-bottom: 0.5rem;
+
+  // Styling
+  background: $o-thin-overlay-material;
+  @include box-shadow($o-thin-overlay-shadow);
+
+  @include narrower-than($library-ui-cutoff) {
+    margin: 1rem 0;
+  }
+
+  &:first-child {
+    margin-top: 1rem;
+  }
+
+  &:last-child {
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    // Typography
+    font-size: 160%;
+
+    // Basic geometry
+    padding: 1.5rem 0.5rem 0.2rem;
+    margin-bottom: 1rem;
+    margin-top: 0;
+
+    @include narrower-than(640px) {
+      font-size: 120%;
+    }
+  }
+
+  .library-item-metadata {
+    // Typography
+    text-transform: uppercase;
+
+    // Basic geometry
+    padding: 0 0.5rem;
+
+    time {
+      font-weight: bold;
+    }
+  }
+
+  .library-item-keywords {
+    // Basic geometry
+    padding: 0 0.5rem;
+    margin-bottom: 0.5rem;
+
+    .label {
+      text-transform: uppercase;
+      margin-right: 0.2rem;
+    }
+
+    a {
+      // Typography
+      text-decoration: underline;
+
+      // Basic geometry
+      margin: 0 0.2rem;
+    }
+  }
+    
+  .library-item-cover {
+    // Basic geometry
+
+    // Styling
+    @include background-size(cover);
+    background-position: center center;
+    padding: 0;
+    border-bottom: 0;
+
+    a {
+      display: block;
+      padding-top: 200px;
+      overflow: hidden;
+    }
+
+    .library-item-title-text {
+      display: inline-block;
+      background: $o-negative-base;
+      padding: 0.5rem;
+      @include border-top-right-radius($o-clickable-target-corner-radius);
+    }
+  }
+
+  &.library-has-cover {
+    .library-item-markers {
+      background: $o-negative-base;
+      border-bottom: 2px solid $o-negative-base;
+    }
+  }
+}
+
+.search-keyword,
+.search-empty {
+  // Typography
+  font-size: 120%;
+
+  // Basic geometry
+  padding: 1rem;
+
+  // Styling
+  color: $o-negative-base;
+
+  a {
+    display: inline-block;
+    margin-left: 0.5rem;
+  }
+
+  @include narrower-than(520px) {
+    text-align: center;
+
+    a {
+      display: block;
+      margin: 1rem 0 0;
+      width: 100%;
+    }
+  }
+}
+
+.search-keyword {
+  // Styling
+  background: $o-friendly;
+}
+
+.search-empty {
+  // Styling
+  background: $o-warning;
+}

@@ -19,9 +19,9 @@ from librarian_content.decorators import with_meta
 from librarian_content.library import metadata
 from librarian_core.contrib.cache.decorators import cached
 from librarian_core.contrib.templates.renderer import template
+from librarian_ui.paginator import Paginator
 
 from ..helpers import open_archive
-from ..paginator import Paginator
 
 
 @cached(prefix='content', timeout=300)
@@ -76,13 +76,14 @@ def content_list():
     per_page = Paginator.parse_per_page(request.params)
     # get content list filtered by above parsed filter params
     item_count = content_count(query, lang, tag, content_type)
+    pager = Paginator(item_count, page, per_page)
+    offset, limit = pager.items
     metas = filter_content(query,
                            lang,
                            tag,
                            content_type,
-                           offset=page - 1,
-                           limit=per_page)
-    pager = Paginator(range(item_count), page, per_page)
+                           offset=offset,
+                           limit=limit)
     return dict(metadata=metas,
                 pager=pager,
                 vals=request.params.decode(),
@@ -120,5 +121,8 @@ def content_detail(path, meta):
         # found registered opener for content_type, so use it for displaying
         # the content item
         url += set_qparam(action='open', opener_id=opener_id).to_qs()
+
+    if request.is_xhr:
+        return url
 
     return redirect(url)
