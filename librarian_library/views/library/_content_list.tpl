@@ -71,7 +71,7 @@
             ## Translators, appears as label for the list of content keywords
             <span class="label">${_('Topics:')}</span>
             % for kw in meta.keywords.split(','):
-                <a href="${i18n_url('content:list', q=kw)}" class="list-item-keyword">${kw.strip()}</a>
+                <a href="${i18n_url('content:list', q=h.to_bytes(kw))}" class="list-item-keyword">${kw.strip()}</a>
             % endfor
         </div>
     % endif
