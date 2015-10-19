@@ -37,9 +37,7 @@
 
 % for meta in metadata:
     <%
-        content_url = i18n_url('content:detail', path=meta.path)
-        if chosen_content_type:
-            content_url += h.set_qparam(content_type=chosen_content_type).to_qs()
+        content_url = i18n_url('files:path', path=meta.path)
     %>
 
     <li class="library-item ${'library-partner' if meta.is_partner else ''} ${'library-sponsored' if meta.is_sponsored else ''} ${'library-has-cover' if meta.cover else ''}" data-id="${meta.path}">
@@ -49,7 +47,7 @@
             style="background-image: url('${url('files:direct', path=th.join(meta.path, meta.cover))}');"
         % endif
         >
-        <a href="${content_url}" tabindex="${loop.index + 1}" class="library-item-link">
+        <a href="${content_url}" tabindex="${loop.index + 1}" class="library-item-link" data-ctypes="${','.join(meta.content_type_names)}" data-prefered-ctype="${chosen_content_type or ''}" data-path="${meta.path}">
             <span class="library-item-title-text">${meta.title | h}</span>
         </a>
     </h2>
