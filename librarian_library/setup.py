@@ -1,11 +1,15 @@
+import os
+import shutil
+
 import pytz
 
 from bottle import request
 
 from librarian_core.contrib.i18n.utils import (set_default_locale,
                                                get_enabled_locales)
+from librarian_content.importer import import_content
 
-from .forms import get_language_form, SetupDateTimeForm
+from .forms import get_language_form, SetupDateTimeForm, SetupImportContentForm
 
 
 def is_language_invalid():
@@ -48,3 +52,45 @@ def setup_datetime():
     timezone = form.processed_data['timezone']
     request.app.supervisor.exts.setup.append({'timezone': timezone})
     return dict(successful=True, timezone=timezone)
+
+
+def get_old_contentdir():
+    contentdir = request.app.config['library.contentdir']
+    return os.path.join(os.path.dirname(contentdir), 'zipballs')
+
+
+def has_old_content():
+    old_contentdir = get_old_contentdir()
+    return os.path.exists(old_contentdir)
+
+
+def import_old_content(old_contentdir):
+    contentdir = request.app.config['library.contentdir']
+    meta_filenames = request.app.config['library.metadata']
+    destdir = os.path.join(contentdir, 'Old_content')
+    if not os.path.exists(destdir):
+        os.makedirs(destdir)
+    import_content(old_contentdir, destdir, meta_filenames)
+
+
+def delete_old_content(old_contentdir):
+    if os.path.exists(old_contentdir):
+        shutil.rmtree(old_contentdir)
+
+
+def setup_import_content_form():
+    return dict(form=SetupImportContentForm())
+
+
+def setup_import_content():
+    form = SetupImportContentForm(request.forms)
+    if not form.is_valid():
+        return dict(successful=False, form=form)
+
+    old_contentdir = get_old_contentdir()
+    if form.processed_data['chosen_action'] == form.IMPORT:
+        import_old_content(old_contentdir)
+    # even when importing, upon completion old content folder has to be deleted
+    delete_old_content(old_contentdir)
+
+    return dict(successful=True)

@@ -29,3 +29,16 @@ class SetupDateTimeForm(form.Form):
                                 value=DEFAULT_TIMEZONE,
                                 validators=[form.Required()],
                                 choices=TIMEZONES)
+
+
+class SetupImportContentForm(form.Form):
+    IMPORT = 'import'
+    IGNORE = 'ignore'
+    ACTIONS = (
+        (IMPORT, _("Import")),
+        (IGNORE, _("Ignore")),
+    )
+    chosen_action = form.SelectField(_("Action"),
+                                     value=IMPORT,
+                                     validators=[form.Required()],
+                                     choices=ACTIONS)

@@ -30,3 +30,13 @@ def initialize(supervisor):
                           method='POST',
                           index=2,
                           test=setup.has_bad_tz)
+    setup_wizard.register('import_content',
+                          setup.setup_import_content_form,
+                          template='setup/step_import_content.tpl',
+                          method='GET',
+                          test=setup.has_old_content)
+    setup_wizard.register('import_content',
+                          setup.setup_import_content,
+                          template='setup/step_import_content.tpl',
+                          method='POST',
+                          test=setup.has_old_content)
