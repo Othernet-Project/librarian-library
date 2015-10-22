@@ -55,8 +55,7 @@ def setup_datetime():
 
 
 def get_old_contentdir():
-    contentdir = request.app.config['library.contentdir']
-    return os.path.join(os.path.dirname(contentdir), 'zipballs')
+    return request.app.config.get('library.legacy_contentdir', '')
 
 
 def has_old_content():
