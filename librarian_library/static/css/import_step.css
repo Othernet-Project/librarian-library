@@ -1,0 +1,102 @@
+/**
+ * This module contains base variables that are used to re-skin (customize) the 
+ * Librarian UI toolkit.
+ *
+ * Recommended way to customize the variables is to load a separate module 
+ * containing customized values _before_ this module.
+ */
+/**
+ * _media_query.scss: media query support
+ *
+ * Copyright 2014-2015, Outernet Inc.
+ * Some rights reserved.
+ *
+ * This software is free software licensed under the terms of GPLv3. See
+ * COPYING file that comes with the source code, or
+ * http://www.gnu.org/licenses/gpl.txt.
+ */
+/* line 6, ../../../src/scss/import_step.scss */
+.import-choices {
+  text-align: center;
+}
+@media only screen and (max-width: 640px) {
+  /* line 6, ../../../src/scss/import_step.scss */
+  .import-choices {
+    text-align: left;
+  }
+}
+/* line 14, ../../../src/scss/import_step.scss */
+.import-choices li {
+  display: inline-block;
+  vertical-align: top;
+  width: 14rem;
+  height: 16rem;
+  margin: 0 1rem;
+  padding: 0.4rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  -moz-border-radius: 0.3rem;
+  -webkit-border-radius: 0.3rem;
+  border-radius: 0.3rem;
+}
+/* line 28, ../../../src/scss/import_step.scss */
+.import-choices li.selected {
+  border: 1px solid #aaa;
+  background: #eee;
+  -moz-box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+/* line 36, ../../../src/scss/import_step.scss */
+.import-choices li:focus .icon, .import-choices li:focus .import-choice-label, .import-choices li:hover .icon, .import-choices li:hover .import-choice-label {
+  color: #255a89;
+}
+/* line 41, ../../../src/scss/import_step.scss */
+.import-choices li::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+@media only screen and (max-width: 640px) {
+  /* line 14, ../../../src/scss/import_step.scss */
+  .import-choices li {
+    display: block;
+    clear: both;
+    width: auto;
+    height: auto;
+    margin: 0;
+    margin-bottom: 2rem;
+  }
+}
+/* line 57, ../../../src/scss/import_step.scss */
+.import-choices .icon {
+  font-size: 500%;
+  line-height: 150%;
+  display: block;
+}
+@media only screen and (max-width: 640px) {
+  /* line 57, ../../../src/scss/import_step.scss */
+  .import-choices .icon {
+    float: left;
+    margin-right: 2rem;
+    line-height: 100%;
+  }
+}
+/* line 72, ../../../src/scss/import_step.scss */
+.import-choices .import-choice-label {
+  font-weight: bold;
+  font-size: 140%;
+  display: block;
+  margin-bottom: 1rem;
+}
+@media only screen and (max-width: 640px) {
+  /* line 72, ../../../src/scss/import_step.scss */
+  .import-choices .import-choice-label {
+    padding-top: 0.5rem;
+    vertical-align: top;
+  }
+}
+/* line 87, ../../../src/scss/import_step.scss */
+.import-choices .import-choice-help {
+  display: block;
+}

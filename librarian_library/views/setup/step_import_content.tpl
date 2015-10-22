@@ -17,7 +17,37 @@
 </%block>
 
 <%block name="step">
-<div class="step-import-content-form">
-    ${forms.field(form.chosen_action)}
-</div>
+    <div class="step-import-content-form" id="import-step-fields">
+        ${forms.field(form.chosen_action)}
+    </div>
+</%block>
+
+<%block name="extra_body">
+    <script type="text/template" id="stepImportChoices">
+        <ul class="import-choices" id="import-choices">
+
+            <li id="import-import" data-action="import" tabindex="1" role="button">
+            <span class="icon icon-import"></span>
+            <span class="import-choice-label">
+                ${_('Import')}
+            </span>
+            <span class="import-choice-help">
+                ${_('Adds existing content to the library')}
+            </span>
+            </li>
+
+            <li id="import-ignore" data-action="ignore" tabindex="2" role="button">
+            <span class="icon icon-discard"></span>
+            <span class="import-choice-label">
+                ${_('Discard')}
+            </span>
+            <span class="import-choice-help">
+                ${_('Removes existing content')}
+            </span>
+            </li>
+
+        </ul>
+
+        <input type="hidden" name="chosen_action" id="import-chosen-action">
+    </script>
 </%block>

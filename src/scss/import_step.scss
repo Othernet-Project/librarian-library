@@ -1,0 +1,91 @@
+@import "compass/css3";
+@import "base/params";
+@import "base/media_query";
+
+
+.import-choices {
+  // Typography
+  text-align: center;
+
+  @include narrower-than(640px) {
+    text-align: left;
+  }
+
+  li {
+    // Basic geometry
+    display: inline-block;
+    vertical-align: top;
+    width: 14rem;
+    height: 16rem;
+    margin: 0 1rem;
+    padding: 0.4rem;
+
+    // Styling
+    cursor: pointer;
+    border: 1px solid transparent;
+    @include border-radius($o-clickable-target-corner-radius);
+
+    &.selected {
+      border: $o-widget-border;
+      background: $o-material;
+      @include box-shadow(inset 0 2px 5px transparentize(black, 0.6));
+    }
+
+    &:focus,
+    &:hover {
+      .icon, .import-choice-label {
+        color: $o-accent;
+      }
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      clear:both;
+    }
+
+    @include narrower-than(640px) {
+      display: block;
+      clear: both;
+      width: auto;
+      height: auto;
+      margin: 0;
+      margin-bottom: 2rem;
+    }
+  }
+
+  .icon {
+    // Typography
+    font-size: 500%;
+    line-height: 150%;
+
+    // Basic geometry
+    display: block;
+
+    @include narrower-than(640px) {
+      float: left;
+      margin-right: 2rem;
+      line-height: 100%;
+    }
+  }
+
+  .import-choice-label {
+    // Typography
+    font-weight: bold;
+    font-size: 140%;
+
+    // Basic geometry
+    display: block;
+    margin-bottom: 1rem;
+
+    @include narrower-than(640px) {
+      padding-top: 0.5rem;
+      vertical-align: top;
+    }
+  }
+
+  .import-choice-help {
+    // Basic geometry
+    display: block;
+  }
+}
