@@ -63,10 +63,10 @@ def has_old_content():
     return os.path.exists(old_contentdir)
 
 
-def import_old_content(old_contentdir):
+def import_old_content(old_contentdir, into='Old content'):
     contentdir = request.app.config['library.contentdir']
     meta_filenames = request.app.config['library.metadata']
-    destdir = os.path.join(contentdir, 'Old_content')
+    destdir = os.path.join(contentdir, into)
     if not os.path.exists(destdir):
         os.makedirs(destdir)
     import_content(old_contentdir, destdir, meta_filenames)
