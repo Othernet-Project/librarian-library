@@ -1,22 +1,27 @@
 <%namespace name="ui_pager" file="/ui/pager.tpl"/>
 
-<%def name="search_clear()">
-    ## Translators, used as label for button that clears search results
-    <a href="${i18n_url('content:list')}" class="button">${_('Clear')}</a>
+<%def name="search_clear(label)">
+    <a href="${i18n_url('content:list')}" class="button">${label}</a>
 </%def>
 
 % if not metadata:
     <p class="library-item search-empty">
-        % if not query and not tag and not chosen_lang:
+        % if not query and not chosen_content_type and not chosen_lang:
             ## Translators, used as note on library page when library is empty
             ${_('Content library is currently empty')}
         % elif query:
-            ## Translators, used as note on library page when search does not return anything
-            ${_("There are no search results for '%(terms)s'") % {'terms': query}}
-            ${self.search_clear()}
-        % elif tag:
-            ## Translators, used as not on library page when there is no content for given tag
-            ${_("There are no results for '%(tag)s'") % {'tag': tag}}
+            ## Translators, used as note on library page when search does not
+            ## return anything {terms} is a placeholder, do not translate
+            ${_("There are no search results for '{terms}'").format(terms=query)}
+            ## Translators, used as label for button that clears search results
+            ${self.search_clear(_('Clear'))}
+        % elif chosen_content_type:
+            ## Translators, used on library page when there is no content for 
+            ## given content type, {type} is a placeholder, do not translate
+            ${_("There is currently no content of {type} type").format(type=chosen_content_type)}
+            ## Translators, used as button label for going back to all content
+            ## types when there is no content for a chosen type.
+            ${self.search_clear(_('Show all types'))}
         % elif chosen_lang:
             ## Translators, used as not on library page when there is no content for given language
             ${_("Language filter for '%(lang)s' is active. Click %(link)s to see all content") % {'lang': th.lang_name_safe(chosen_lang), 'link': '<a href="%(path)s">%(label)s</a>' % {'path': i18n_url(request.path) + h.set_qparam(lang='').to_qs(), 'label': _('here')}}}
@@ -31,7 +36,8 @@
         ## Translators, used as note on library page when showing search
         ## results, {term} represents the text typed in by user
         ${_("Showing search results for '{term}'").format(term=query)}
-        ${self.search_clear()}
+        ## Translators, used as label for button that clears search results
+        ${self.search_clear(_('Clear'))}
     </p>
 % endif
 
