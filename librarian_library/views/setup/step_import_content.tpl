@@ -3,7 +3,8 @@
 <%namespace name="forms" file="/ui/forms.tpl"/>
 
 <%block name="step_title">
-    <span class="icon icon-file"></span> ${_('Import existing content')}
+    <span class="icon icon-file"></span> 
+    ${_('Existing content')}
 </%block>
 
 <%block name="step_desc">
