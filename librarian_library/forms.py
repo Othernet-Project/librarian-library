@@ -35,8 +35,11 @@ class SetupImportContentForm(form.Form):
     IMPORT = 'import'
     IGNORE = 'ignore'
     ACTIONS = (
+        # Translators, used for setup wizard action of importing legacy content
         (IMPORT, _("Import")),
-        (IGNORE, _("Ignore")),
+        # Translators, used for setup wizard action of discarding legacy
+        # content
+        (IGNORE, _("Discard")),
     )
     chosen_action = form.SelectField(_("Action"),
                                      value=IMPORT,
