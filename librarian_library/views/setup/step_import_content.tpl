@@ -3,11 +3,16 @@
 <%namespace name="forms" file="/ui/forms.tpl"/>
 
 <%block name="step_title">
-    <span class="icon icon-globe"></span> ${_('Import existing content')}
+    <span class="icon icon-file"></span> ${_('Import existing content')}
 </%block>
 
 <%block name="step_desc">
-    <p>${_('Do you wish to import existing content items?')}</p>
+    <p>
+        ${_("""
+        We have found content from a previous version of this software. You may
+        choose to import or discard it.
+        """)}
+    </p>
 </%block>
 
 <%block name="step">
