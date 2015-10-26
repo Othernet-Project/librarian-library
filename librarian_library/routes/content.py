@@ -8,8 +8,6 @@ This software is free software licensed under the terms of GPLv3. See COPYING
 file that comes with the source code, or http://www.gnu.org/licenses/gpl.txt.
 """
 
-import os
-
 from bottle import request, redirect, abort
 from bottle_utils.ajax import roca_view
 from bottle_utils.html import set_qparam
@@ -32,7 +30,6 @@ def content_count(query, lang, tag, content_type):
 
 @cached(prefix='content', timeout=300)
 def filter_content(query, lang, tag, content_type, offset, limit):
-    conf = request.app.config
     archive = open_archive()
     raw_metas = archive.get_content(terms=query,
                                     lang=lang,
@@ -40,10 +37,7 @@ def filter_content(query, lang, tag, content_type, offset, limit):
                                     content_type=content_type,
                                     offset=offset,
                                     limit=limit)
-    get_content_path = lambda relpath: os.path.join(conf['library.contentdir'],
-                                                    relpath)
-    return [metadata.Meta(meta, get_content_path(meta['path']))
-            for meta in raw_metas]
+    return [metadata.Meta(meta) for meta in raw_metas]
 
 
 @roca_view('library/content_list', 'library/_content_list', template_func=template)
