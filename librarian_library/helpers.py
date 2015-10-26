@@ -28,6 +28,7 @@ from .consts import LICENSES
 def open_archive(config=None):
     conf = config or request.app.config
     return Archive.setup(conf['library.backend'],
+                         request.app.supervisor.exts.fsal,
                          request.db.content,
                          contentdir=conf['library.contentdir'],
                          meta_filenames=conf['library.metadata'])
