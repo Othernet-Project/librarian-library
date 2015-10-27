@@ -16,7 +16,7 @@
             ## Translators, used as label for button that clears search results
             ${self.search_clear(_('Clear'))}
         % elif chosen_content_type:
-            ## Translators, used on library page when there is no content for 
+            ## Translators, used on library page when there is no content for
             ## given content type, {type} is a placeholder, do not translate
             ${_("There is currently no content of {type} type").format(type=chosen_content_type)}
             ## Translators, used as button label for going back to all content
@@ -50,10 +50,10 @@
 
     <h2 class="library-item-title${ ' library-item-cover' if meta.cover else ''}"${th.i18n_attrs(meta.lang)}
         % if meta.cover:
-            style="background-image: url('${url('files:direct', path=th.join(meta.path, meta.cover))}');"
+            style="background-image: url('${h.quoted_url('files:direct', path=th.join(meta.path, meta.cover))}');"
         % endif
         >
-        <a href="${content_url}" tabindex="${loop.index + 1}" class="library-item-link" data-ctypes="${','.join(meta.content_type_names)}" data-prefered-ctype="${chosen_content_type or ''}" data-path="${meta.path}">
+        <a href="${content_url}" tabindex="${loop.index + 1}" class="library-item-link" data-ctypes="${','.join(meta.content_type_names)}" data-prefered-ctype="${chosen_content_type or ''}" data-path="${meta.path | h.urlquote}">
             <span class="library-item-title-text">${meta.title | h}</span>
         </a>
     </h2>
@@ -75,7 +75,7 @@
             ## Translators, appears as label for the list of content keywords
             <span class="label">${_('Topics:')}</span>
             % for kw in meta.keywords.split(','):
-                <a href="${i18n_url('content:list', q=h.to_bytes(kw))}" class="list-item-keyword">${kw.strip()}</a>
+                <a href="${i18n_url('content:list', q=kw)}" class="list-item-keyword">${kw.strip()}</a>
             % endfor
         </div>
     % endif
