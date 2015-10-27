@@ -7,9 +7,10 @@ from bottle import request
 
 from librarian_core.contrib.i18n.utils import (set_default_locale,
                                                get_enabled_locales)
-from librarian_content.importer import import_content
 
 from .forms import get_language_form, SetupDateTimeForm, SetupImportContentForm
+from .helpers import open_archive
+from .importer import import_content
 
 
 def is_language_invalid():
@@ -65,11 +66,11 @@ def has_old_content():
 
 def import_old_content(old_contentdir, into='Old content'):
     contentdir = request.app.config['library.contentdir']
-    meta_filenames = request.app.config['library.metadata']
     destdir = os.path.join(contentdir, into)
     if not os.path.exists(destdir):
         os.makedirs(destdir)
-    import_content(old_contentdir, destdir, meta_filenames)
+    archive = open_archive()
+    import_content(old_contentdir, destdir, archive)
 
 
 def delete_old_content(old_contentdir):
