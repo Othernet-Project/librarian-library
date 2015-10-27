@@ -60,7 +60,7 @@ def get_old_contentdir():
 
 def has_old_content():
     old_contentdir = get_old_contentdir()
-    return os.path.exists(old_contentdir)
+    return os.path.exists(old_contentdir) and os.listdir(old_contentdir)
 
 
 def import_old_content(old_contentdir, into='Old content'):
