@@ -19,10 +19,7 @@ setup(
     include_package_data=True,
     long_description=read('README.rst'),
     install_requires=[
-        'pytz',
         'scandir',
-        'bottle-fdsend',
-        'outernet_metadata',
         'librarian_core',
         'librarian_menu',
         'librarian_auth',
