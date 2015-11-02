@@ -19,11 +19,11 @@ ${_('Library')}
             <label for="q" class="o-multisearch-label">${_('Search:')}</label>
         </div>
         <div class="o-panel">
-            ${h.vinput('q', vals, _class='search', _type='text', placeholder=_('search keywords'))}
+            ${h.vinput('q', {'q': query}, _class='search', _type='text', placeholder=_('search keywords'))}
         </div>
-        ## The hidden inputs are placed in the markup so they are not first or 
-        ## last child of the conaining element. This is because in the 
-        ## multisearch layout, the first and last child are treated 
+        ## The hidden inputs are placed in the markup so they are not first or
+        ## last child of the conaining element. This is because in the
+        ## multisearch layout, the first and last child are treated
         ## differently.
         ${h.vinput('lang', vals, _type='hidden')}
         ${h.vinput('p', vals, _type='hidden')}

@@ -10,7 +10,7 @@ file that comes with the source code, or http://www.gnu.org/licenses/gpl.txt.
 
 from bottle import request, redirect, abort
 from bottle_utils.ajax import roca_view
-from bottle_utils.html import set_qparam
+from bottle_utils.html import set_qparam, urlunquote
 from bottle_utils.i18n import lazy_gettext as _, i18n_url
 
 from librarian_content.decorators import with_meta
@@ -44,7 +44,7 @@ def filter_content(query, lang, tag, content_type, offset, limit):
 def content_list():
     """ Show list of content """
     # parse search query
-    query = request.params.getunicode('q', '').strip()
+    query = urlunquote(request.params.get('q', '')).strip()
     # parse language filter
     default_lang = request.user.options.get('content_language', None)
     lang = request.params.get('lang', default_lang)
