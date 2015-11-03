@@ -10,7 +10,7 @@
 
 <%block name="step_desc">
     ## Translators, used during setup wizard in language settings step
-    <p>${_('Please select the default interface language. This will be the starting user inteface language for all users. Users will be able to change it later.')}</p>
+    <p>${_('Please select the default interface language. Users can change their language preference later.')}</p>
 </%block>
 
 <%block name="step">
