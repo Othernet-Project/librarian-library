@@ -15,6 +15,6 @@
 
 <%block name="step">
     <div class="step-language-form">
-        ${forms.field(form.language)}
+        ${forms.field(form.language, id='language-select-field')}
     </div>
 </%block>
