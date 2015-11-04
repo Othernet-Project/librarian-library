@@ -24,7 +24,8 @@
             ${self.search_clear(_('Show all types'))}
         % elif chosen_lang:
             ## Translators, used as not on library page when there is no content for given language
-            ${_("Language filter for '%(lang)s' is active. Click %(link)s to see all content") % {'lang': th.lang_name_safe(chosen_lang), 'link': '<a href="%(path)s">%(label)s</a>' % {'path': i18n_url(request.path) + h.set_qparam(lang='').to_qs(), 'label': _('here')}}}
+            <% clear_filter_link = '<a href="{path}">{label}</a>'.format(path=i18n_url(request.path) + h.set_qparam(lang='').to_qs(), label=_('here')) %>
+            ${_("Language filter for '{lang}' is active. Click {link} to see all content").format(lang=th.lang_name_safe(chosen_lang), link=clear_filter_link)}
         % endif
     </p>
     ## Bail out of template early

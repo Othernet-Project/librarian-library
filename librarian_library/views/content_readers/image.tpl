@@ -50,7 +50,7 @@
         <li class="album-item">
             <a href="${content_url + h.set_qparam(content_type=chosen_content_type).set_qparam(path=loop.index).to_qs()}">
                 <img class="thumbnail" src="${thumb_url}" />
-                <span class="title">${image['title'] if image.get('title') else _('Image %s of %s') % (loop.index, img_count)}</span>
+                <span class="title">${image['title'] if image.get('title') else _('Image {index} of {count}').format(index=loop.index, count=img_count)}</span>
             </a>
         </li>
     % endfor
@@ -94,7 +94,7 @@
     ## Translators, attribution line appearing in the content list
     <p class="attrib">
     % if meta.publisher:
-    ${_('%(date)s by %(publisher)s.') % dict(date=meta.timestamp.strftime('%Y-%m-%d'), publisher=meta.publisher)}
+    ${_('{date} by {publisher}.').format(date=meta.timestamp.strftime('%Y-%m-%d'), publisher=meta.publisher)}
     % else:
     ${meta.timestamp.strftime('%Y-%m-%d')}
     % endif

@@ -36,7 +36,7 @@
     ## Translators, attribution line appearing in the content list
     <p class="attrib">
     % if meta.publisher:
-    ${_('%(date)s by %(publisher)s.') % dict(date=meta.timestamp.strftime('%Y-%m-%d'), publisher=meta.publisher)}
+    ${_('{date} by {publisher}.').format(date=meta.timestamp.strftime('%Y-%m-%d'), publisher=meta.publisher)}
     % else:
     ${meta.timestamp.strftime('%Y-%m-%d')}
     % endif
