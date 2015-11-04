@@ -84,4 +84,6 @@
     </li>
 % endfor
 
+<p class="pager">
 ${ui_pager.pager_links(pager, _('Previous'), _('Next'))}
+</p>
