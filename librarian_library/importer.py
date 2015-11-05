@@ -57,6 +57,7 @@ def find_content_dirs(basedir):
     (e.g., without converting it to a list) due to increased memory usage with
     large number of directories.
     """
+    basedir = basedir.rstrip('/')
     rxp = re.compile(basedir + HEX_PATH)
     for path in fnwalk(basedir, lambda p: rxp.match(p)):
         yield path
