@@ -58,7 +58,7 @@ def setup_datetime():
 
 
 def get_old_contentdirs():
-    return request.app.config.get('library.legacy_contentdir', [])
+    return request.app.config.get('library.legacy_contentdirs', [])
 
 
 def has_old_content():
