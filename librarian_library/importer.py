@@ -126,6 +126,9 @@ def import_content(srcdir, destdir, archive):
         dest_path = os.path.join(destdir, title)
         if not os.path.exists(dest_path):
             shutil.copytree(src_path, dest_path)
+            # delete content item from old location
+            shutil.rmtree(src_path)
+            # process the found metadata
             upgrade_meta(meta)
             meta_path = os.path.join(dest_path, meta_filenames[0])
             with open(meta_path, 'w') as meta_file:

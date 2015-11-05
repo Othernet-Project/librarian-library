@@ -57,13 +57,13 @@ def setup_datetime():
     return dict(successful=True, timezone=timezone)
 
 
-def get_old_contentdir():
-    return request.app.config.get('library.legacy_contentdir', '')
+def get_old_contentdirs():
+    return request.app.config.get('library.legacy_contentdir', [])
 
 
 def has_old_content():
-    old_contentdir = get_old_contentdir()
-    return os.path.exists(old_contentdir) and os.listdir(old_contentdir)
+    return any([os.path.exists(contentdir) and os.listdir(contentdir)
+                for contentdir in get_old_contentdirs()])
 
 
 def import_old_content(old_contentdir, into='Old content'):
@@ -89,10 +89,15 @@ def setup_import_content():
     if not form.is_valid():
         return dict(successful=False, form=form)
 
-    old_contentdir = get_old_contentdir()
+    old_contentdirs = get_old_contentdirs()
     if form.processed_data['chosen_action'] == form.IMPORT:
-        import_old_content(old_contentdir)
-    # even when importing, upon completion old content folder has to be deleted
-    delete_old_content(old_contentdir)
+        for contentdir in old_contentdirs:
+            import_old_content(contentdir)
+            # even when importing, upon completion old content folder has to be
+            # deleted
+            delete_old_content(contentdir)
+    elif form.processed_data['chosen_action'] == form.IGNORE:
+        for contentdir in old_contentdirs:
+            delete_old_content(contentdir)
 
     return dict(successful=True)
