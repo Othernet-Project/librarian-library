@@ -89,7 +89,7 @@ def setup_import_content():
             import_content(srcdir, destdir, fsal, archive)
             # even when importing, upon completion old content folder has to be
             # deleted
-            #delete_old_content(contentdir)
+            delete_old_content(srcdir)
     elif form.processed_data['chosen_action'] == form.IGNORE:
         for contentdir in old_contentdirs:
             delete_old_content(contentdir)
