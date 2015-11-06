@@ -1,7 +1,7 @@
 import json
+import logging
 import os
 import re
-import shutil
 import uuid
 
 import scandir
@@ -109,15 +109,20 @@ def delete_old_meta(path, meta_filenames):
                 os.remove(old_meta_path)
 
 
-def import_content(srcdir, destdir, archive):
+def import_content(srcdir, destdir, fsal, archive):
     """Discover content directories under ``srcdir`` using the first generation
     folder structure and copy them into ``destdir``, while dropping the old
     nested structure and putting them into a single folder which name is
     generated from the slugified title of the content."""
     meta_filenames = archive.config['meta_filenames']
+    srcdir = os.path.abspath(srcdir)
+    logging.info("Starting content import of {0}".format(srcdir))
+    added = 0
     for src_path in find_content_dirs(srcdir):
         meta = read_meta(src_path, meta_filenames)
         if not meta:
+            logging.error("Content import of {0} skipped. No valid metadata "
+                          "was found.")
             continue  # metadata couldn't be found or read, skip this item
 
         title = (safe_title(meta['title']) or
@@ -125,17 +130,23 @@ def import_content(srcdir, destdir, archive):
                  get_random_title())
         dest_path = os.path.join(destdir, title)
         if not os.path.exists(dest_path):
-            shutil.copytree(src_path, dest_path)
-            # delete content item from old location
-            shutil.rmtree(src_path)
-            # process the found metadata
+            (success, error) = fsal.transfer(src_path, dest_path)
+            if not success:
+                logging.error("Content import of {0} failed with "
+                              "{1}".format(src_path, error))
+                continue
+
+            # process and save the found metadata
             upgrade_meta(meta)
-            meta_path = os.path.join(dest_path, meta_filenames[0])
+            abs_dest_path = os.path.join(archive.config['contentdir'],
+                                         dest_path)
+            meta_path = os.path.join(abs_dest_path, meta_filenames[0])
             with open(meta_path, 'w') as meta_file:
                 json.dump(meta, meta_file)
             # delete any other meta files
-            delete_old_meta(dest_path, meta_filenames)
+            delete_old_meta(abs_dest_path, meta_filenames)
             # add content to database
-            content_path = os.path.relpath(dest_path,
-                                           archive.config['contentdir'])
-            archive.add_to_archive(content_path)
+            archive.add_to_archive(dest_path)
+            added += 1
+
+    logging.info("{0} content items imported from {1).".format(added, srcdir))

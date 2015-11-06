@@ -66,15 +66,6 @@ def has_old_content():
                 for contentdir in get_old_contentdirs()])
 
 
-def import_old_content(old_contentdir, into='Old content'):
-    contentdir = request.app.config['library.contentdir']
-    destdir = os.path.join(contentdir, into)
-    if not os.path.exists(destdir):
-        os.makedirs(destdir)
-    archive = open_archive()
-    import_content(old_contentdir, destdir, archive)
-
-
 def delete_old_content(old_contentdir):
     if os.path.exists(old_contentdir):
         shutil.rmtree(old_contentdir)
@@ -91,11 +82,14 @@ def setup_import_content():
 
     old_contentdirs = get_old_contentdirs()
     if form.processed_data['chosen_action'] == form.IMPORT:
-        for contentdir in old_contentdirs:
-            import_old_content(contentdir)
+        fsal = request.app.supervisor.exts.fsal
+        archive = open_archive()
+        destdir = request.app.config['library.legacy_destination']
+        for srcdir in old_contentdirs:
+            import_content(srcdir, destdir, fsal, archive)
             # even when importing, upon completion old content folder has to be
             # deleted
-            delete_old_content(contentdir)
+            #delete_old_content(contentdir)
     elif form.processed_data['chosen_action'] == form.IGNORE:
         for contentdir in old_contentdirs:
             delete_old_content(contentdir)
