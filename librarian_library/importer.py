@@ -149,4 +149,4 @@ def import_content(srcdir, destdir, fsal, archive):
             archive.add_to_archive(dest_path)
             added += 1
 
-    logging.info("{0} content items imported from {1).".format(added, srcdir))
+    logging.info("{0} content items imported from {1}.".format(added, srcdir))
