@@ -6,14 +6,12 @@ import uuid
 
 import scandir
 
-try:
-    unicode = unicode
-except NameError:
-    unicode = str
+from bottle_utils.common import unicode, to_bytes, to_unicode
 
 
 HEX_PATH = r'(/[0-9a-f]{3}){10}/[0-9a-f]{2}$'  # md5-based dir path
 ILLEGAL = re.compile(r'[\s!"#$%&\':()*\-/<=>?@\[\\\]^_`{|},.]+')
+MAX_TITLE_LENGTH = 255
 
 
 def fnwalk(path, fn, shallow=False):
@@ -125,10 +123,10 @@ def import_content(srcdir, destdir, fsal, archive):
                           "was found.")
             continue  # metadata couldn't be found or read, skip this item
 
-        title = (safe_title(meta['title']) or
-                 safe_title(meta['url']) or
-                 get_random_title())
-        dest_path = os.path.join(destdir, title)
+        title = to_bytes(safe_title(meta['title']) or
+                         safe_title(meta['url']) or
+                         get_random_title())
+        dest_path = os.path.join(destdir, to_unicode(title[:MAX_TITLE_LENGTH]))
         if not os.path.exists(dest_path):
             (success, error) = fsal.transfer(src_path, dest_path)
             if not success:
