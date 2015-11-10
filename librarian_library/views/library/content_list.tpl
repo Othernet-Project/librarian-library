@@ -88,11 +88,7 @@ ${_('Library')}
 </div>
 
 <ul id="library-list" class="library-list ${chosen_content_type or ''}" data-total="${int(pager.pages)}">
-    % if chosen_content_type == 'app':
-    ${app_list.body()}
-    % else:
     ${content_list.body()}
-    % endif
 </ul>
 
 <%block name="extra_scripts">
