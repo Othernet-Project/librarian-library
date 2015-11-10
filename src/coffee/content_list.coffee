@@ -3,6 +3,7 @@
   libraryList = $ '#library-list'
   libraryItemLinkSelector = '.library-item-link'
   openerPanelSelector = '#content'
+  contentLanguage = $ '.library-filterbar #language'
 
   $('#content-language').on 'change', () ->
     $(this).parents('form').submit()
@@ -47,5 +48,10 @@
     console.log url
     $.modalContent url, fullScreen: true
     return
+
+  contentLanguage.on 'change', (e) ->
+    select = $ this
+    form = select.parents 'form'
+    form.submit()
 
 ) this, this.jQuery, this.templates

@@ -65,7 +65,7 @@ ${_('Library')}
         <form method="get" action="${i18n_url('content:list')}">
             ${h.vinput('content_type', vals, _type='hidden')}
             ${h.vinput('p', vals, _type='hidden')}
-            ${forms.select('language', clangs, _('Language'), 'content-')}
+            ${forms.select('language', clangs)}
         </form>
     % endif
 

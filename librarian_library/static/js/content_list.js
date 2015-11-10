@@ -2,10 +2,11 @@
 var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 (function(window, $, templates) {
-  var getLocalePrefix, getOpenerParams, getOpenerUrl, libraryItemLinkSelector, libraryList, openerPanelSelector;
+  var contentLanguage, getLocalePrefix, getOpenerParams, getOpenerUrl, libraryItemLinkSelector, libraryList, openerPanelSelector;
   libraryList = $('#library-list');
   libraryItemLinkSelector = '.library-item-link';
   openerPanelSelector = '#content';
+  contentLanguage = $('.library-filterbar #language');
   $('#content-language').on('change', function() {
     $(this).parents('form').submit();
   });
@@ -30,7 +31,7 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
       targetCtype: targetCtype
     };
   };
-  return libraryList.on('click', libraryItemLinkSelector, function(e) {
+  libraryList.on('click', libraryItemLinkSelector, function(e) {
     var link, path, ref, targetCtype, url;
     link = $(this);
     ref = getOpenerParams(link), path = ref.path, targetCtype = ref.targetCtype;
@@ -43,5 +44,11 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
     $.modalContent(url, {
       fullScreen: true
     });
+  });
+  return contentLanguage.on('change', function(e) {
+    var form, select;
+    select = $(this);
+    form = select.parents('form');
+    return form.submit();
   });
 })(this, this.jQuery, this.templates);

@@ -47,7 +47,7 @@ def content_list():
     query = urlunquote(request.params.get('q', '')).strip()
     # parse language filter
     default_lang = request.user.options.get('content_language', None)
-    lang = request.params.get('lang', default_lang)
+    lang = request.params.get('language', default_lang)
     request.user.options['content_language'] = lang
     # parse content type filter
     content_type = request.params.get('content_type')
