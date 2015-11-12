@@ -123,10 +123,11 @@ def import_content(srcdir, destdir, fsal, archive):
                           "was found.")
             continue  # metadata couldn't be found or read, skip this item
 
-        title = to_bytes(safe_title(meta['title']) or
-                         safe_title(meta['url']) or
-                         get_random_title())
-        dest_path = os.path.join(destdir, to_unicode(title[:MAX_TITLE_LENGTH]))
+        title = to_unicode(to_bytes(safe_title(meta['title']) or
+                                    safe_title(meta['url']) or
+                                    get_random_title())[:MAX_TITLE_LENGTH])
+        first_letter = title[0].upper()
+        dest_path = os.path.join(destdir, first_letter, title)
         if not os.path.exists(dest_path):
             (success, error) = fsal.transfer(src_path, dest_path)
             if not success:
