@@ -54,4 +54,12 @@
 
         <input type="hidden" name="chosen_action" id="import-chosen-action">
     </script>
+
+    <script type="text/template" id="spinner">
+        <span class="icon icon-spinning-loader"></span>
+    </script>
+
+    <script type="text/template" id="okIcon">
+        <span class="icon icon-ok-outline"></span>
+    </script>
 </%block>
