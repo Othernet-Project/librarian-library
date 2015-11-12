@@ -1,3 +1,4 @@
+import re
 import logging
 
 from functools import wraps
@@ -11,6 +12,8 @@ from .netutils import IPv4Range, get_target_host
 EXPORTS = {
     'content_resolver_plugin': {}
 }
+
+IP_RE = re.compile(r'^(?:\d{1,3}\.){3}\d{1,3}$')
 
 
 def content_resolver_plugin(supervisor):
@@ -28,11 +31,16 @@ def content_resolver_plugin(supervisor):
         @wraps(callback)
         def wrapper(*args, **kwargs):
             target_host = get_target_host()
-            is_regular_access = target_host in root_url
-            if not is_regular_access and request.remote_addr in ip_range:
-                # a content domain was entered(most likely), try to load it
-                content_url = get_content_url(root_url, target_host)
-                return redirect(content_url)
-            return callback(*args, **kwargs)
+
+            # We consider access to be direct if they used the hostname that
+            # was chosen to represent this box, or they used an IP address.
+            is_direct = (target_host in root_url) or IP_RE.match(target_host)
+            if is_direct or request.remote_addr not in ip_range:
+                return callback(*args, **kwargs)
+
+            # a content domain was entered (most likely), try to load it
+            content_url = get_content_url(root_url, target_host)
+            return redirect(content_url)
+
         return wrapper
     return decorator
