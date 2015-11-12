@@ -2,7 +2,6 @@
 @import "base/params";
 @import "base/media_query";
 
-
 .import-choices {
   // Typography
   text-align: center;
@@ -88,4 +87,18 @@
     // Basic geometry
     display: block;
   }
+}
+
+.note {
+  // Typography
+  font-weight: bold;
+
+  // Basic geometry
+  padding: 1rem;
+  margin-top: 1rem;
+
+  // Styling
+  border: 1px solid $o-friendly;
+  background: transparentize($o-friendly, 0.9);
+  color: $o-friendly;
 }
