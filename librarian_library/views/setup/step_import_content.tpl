@@ -20,6 +20,10 @@
     <div class="step-import-content-form" id="import-step-fields">
         ${forms.field(form.chosen_action)}
     </div>
+    <p class="note">
+        ## Translators, note shown during import step
+        ${_('Both import and discard may take a long time to complete. Please do not close this tab or unplug the receiver.')}
+    </p>
 </%block>
 
 <%block name="extra_body">
