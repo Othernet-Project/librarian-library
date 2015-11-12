@@ -42,7 +42,7 @@ def get_content_url(root_url, domain):
         meta = matched_contents[0]
     except IndexError:
         # invalid content domain
-        path = 'content-not-found'
+        path = 'you-are-on-outernet?wanted={}'.format(domain)
     else:
         path = i18n_url('opener:detail')
         path += set_qparam(path=meta.path).to_qs()
