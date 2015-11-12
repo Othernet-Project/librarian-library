@@ -9,56 +9,22 @@ import scandir
 from bottle_utils.common import unicode, to_bytes, to_unicode
 
 
-HEX_PATH = r'(/[0-9a-f]{3}){10}/[0-9a-f]{2}$'  # md5-based dir path
 ILLEGAL = re.compile(r'[\s!"#$%&\':()*\-/<=>?@\[\\\]^_`{|},.]+')
 MAX_TITLE_LENGTH = 255
 
 
-def fnwalk(path, fn, shallow=False):
-    """
-    Walk directory tree top-down until directories of desired length are found
-    This generator function takes a ``path`` from which to begin the traversal,
-    and a ``fn`` object that selects the paths to be returned. It calls
-    ``os.listdir()`` recursively until either a full path is flagged by ``fn``
-    function as valid (by returning a truthy value) or ``os.listdir()`` fails
-    with ``OSError``.
-    This function has been added specifically to deal with large and deep
-    directory trees, and it's therefore not advisable to convert the return
-    values to lists and similar memory-intensive objects.
-    The ``shallow`` flag is used to terminate further recursion on match. If
-    ``shallow`` is ``False``, recursion continues even after a path is matched.
-    For example, given a path ``/foo/bar/bar``, and a matcher that matches
-    ``bar``, with ``shallow`` flag set to ``True``, only ``/foo/bar`` is
-    matched. Otherwise, both ``/foo/bar`` and ``/foo/bar/bar`` are matched.
-    """
-    if fn(path):
-        yield path
-        if shallow:
-            return
-
-    try:
-        entries = scandir.scandir(path)
-    except OSError:
-        return
-
-    for entry in entries:
+def find_content_dirs(basedir, meta_filenames):
+    for entry in scandir.scandir(basedir):
         if entry.is_dir():
-            for child in fnwalk(entry.path, fn, shallow):
+            for child in find_content_dirs(entry.path, meta_filenames):
                 yield child
-
-
-def find_content_dirs(basedir):
-    """ Find all content directories within basedir
-    This function matches all MD5-based directory structures within the
-    specified base directory. It uses glob patterns to do this.
-    The returned value is an iterator. It's highly recommended to use it as is
-    (e.g., without converting it to a list) due to increased memory usage with
-    large number of directories.
-    """
-    basedir = basedir.rstrip('/')
-    rxp = re.compile(basedir + HEX_PATH)
-    for path in fnwalk(basedir, lambda p: rxp.match(p)):
-        yield path
+        else:
+            filename = os.path.basename(entry.path)
+            if filename in meta_filenames:
+                yield os.path.dirname(entry.path)
+                # when it resumes, abort exploration of the current folder
+                # since it got removed in the meantime
+                break
 
 
 def get_random_title():
@@ -116,7 +82,7 @@ def import_content(srcdir, destdir, fsal, archive):
     srcdir = os.path.abspath(srcdir)
     logging.info("Starting content import of {0}".format(srcdir))
     added = 0
-    for src_path in find_content_dirs(srcdir):
+    for src_path in find_content_dirs(srcdir, meta_filenames):
         meta = read_meta(src_path, meta_filenames)
         if not meta:
             logging.error("Content import of {0} skipped. No valid metadata "
