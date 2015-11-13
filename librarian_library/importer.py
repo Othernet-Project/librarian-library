@@ -102,7 +102,7 @@ def import_content(srcdir, destdir, fsal, meta_filenames):
         match = FIRST_CHAR.search(title)
         first_letter = (match.group() if match else None) or title[0]
         dest_path = os.path.join(destdir, first_letter.upper(), title)
-        if not os.path.exists(dest_path):
+        if not fsal.exists(dest_path):
             (success, error) = fsal.transfer(src_path, dest_path)
             if not success:
                 logging.error("Content import of {0} failed with "
