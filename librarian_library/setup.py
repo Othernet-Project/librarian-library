@@ -10,7 +10,6 @@ from librarian_core.contrib.i18n.utils import (set_default_locale,
                                                get_enabled_locales)
 
 from .forms import get_language_form, SetupDateTimeForm, SetupImportContentForm
-from .helpers import open_archive
 from .importer import import_content
 
 
@@ -83,10 +82,10 @@ def setup_import_content():
     old_contentdirs = get_old_contentdirs()
     if form.processed_data['chosen_action'] == form.IMPORT:
         fsal = request.app.supervisor.exts.fsal
-        archive = open_archive()
+        meta_filenames = request.app.config['library.metadata']
         destdir = request.app.config['library.legacy_destination']
         for srcdir in old_contentdirs:
-            import_content(srcdir, destdir, fsal, archive)
+            import_content(srcdir, destdir, fsal, meta_filenames)
             # even when importing, upon completion old content folder has to be
             # deleted
             delete_old_content(srcdir)

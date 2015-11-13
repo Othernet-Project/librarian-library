@@ -74,12 +74,11 @@ def delete_old_meta(path, meta_filenames):
                 os.remove(old_meta_path)
 
 
-def import_content(srcdir, destdir, fsal, archive):
+def import_content(srcdir, destdir, fsal, meta_filenames):
     """Discover content directories under ``srcdir`` using the first generation
     folder structure and copy them into ``destdir``, while dropping the old
     nested structure and putting them into a single folder which name is
     generated from the slugified title of the content."""
-    meta_filenames = archive.config['meta_filenames']
     srcdir = os.path.abspath(srcdir)
     logging.info("Starting content import of {0}".format(srcdir))
     added = 0
@@ -109,7 +108,8 @@ def import_content(srcdir, destdir, fsal, archive):
                 logging.error("Content import of {0} failed with "
                               "{1}".format(src_path, error))
                 continue
-            # add content to database
-            added += archive.add_to_archive(dest_path)
+            # adding to database will happen when we're notified by fsal about
+            # the event
+            added += 1
 
     logging.info("{0} content items imported from {1}.".format(added, srcdir))
