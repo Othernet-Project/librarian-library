@@ -88,7 +88,14 @@ def import_content(srcdir, destdir, fsal, archive):
             logging.error("Content import of {0} skipped. No valid metadata "
                           "was found.")
             continue  # metadata couldn't be found or read, skip this item
-
+        # process and save the found metadata
+        upgrade_meta(meta)
+        meta_path = os.path.join(src_path, meta_filenames[0])
+        with open(meta_path, 'w') as meta_file:
+            json.dump(meta, meta_file)
+        # delete any other meta files
+        delete_old_meta(src_path, meta_filenames)
+        # move content folder into library
         title = to_unicode(to_bytes(safe_title(meta['title']) or
                                     safe_title(meta['url']) or
                                     get_random_title())[:MAX_TITLE_LENGTH])
@@ -100,18 +107,7 @@ def import_content(srcdir, destdir, fsal, archive):
                 logging.error("Content import of {0} failed with "
                               "{1}".format(src_path, error))
                 continue
-
-            # process and save the found metadata
-            upgrade_meta(meta)
-            abs_dest_path = os.path.join(archive.config['contentdir'],
-                                         dest_path)
-            meta_path = os.path.join(abs_dest_path, meta_filenames[0])
-            with open(meta_path, 'w') as meta_file:
-                json.dump(meta, meta_file)
-            # delete any other meta files
-            delete_old_meta(abs_dest_path, meta_filenames)
             # add content to database
-            archive.add_to_archive(dest_path)
-            added += 1
+            added += archive.add_to_archive(dest_path)
 
     logging.info("{0} content items imported from {1}.".format(added, srcdir))
