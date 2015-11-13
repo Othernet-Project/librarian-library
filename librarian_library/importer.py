@@ -10,6 +10,7 @@ from bottle_utils.common import unicode, to_bytes, to_unicode
 
 
 ILLEGAL = re.compile(r'[\s!"#$%&\':()*\-/<=>?@\[\\\]^_`{|},.]+')
+FIRST_CHAR = re.compile(r'\w{1}', re.UNICODE)
 MAX_TITLE_LENGTH = 255
 
 
@@ -99,8 +100,9 @@ def import_content(srcdir, destdir, fsal, archive):
         title = to_unicode(to_bytes(safe_title(meta['title']) or
                                     safe_title(meta['url']) or
                                     get_random_title())[:MAX_TITLE_LENGTH])
-        first_letter = title[0].upper()
-        dest_path = os.path.join(destdir, first_letter, title)
+        match = FIRST_CHAR.match(title)
+        first_letter = (match.group() if match else None) or title[0]
+        dest_path = os.path.join(destdir, first_letter.upper(), title)
         if not os.path.exists(dest_path):
             (success, error) = fsal.transfer(src_path, dest_path)
             if not success:
