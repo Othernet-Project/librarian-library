@@ -99,7 +99,7 @@ def import_content(srcdir, destdir, fsal, meta_filenames):
         title = to_unicode(to_bytes(safe_title(meta['title']) or
                                     safe_title(meta['url']) or
                                     get_random_title())[:MAX_TITLE_LENGTH])
-        match = FIRST_CHAR.match(title)
+        match = FIRST_CHAR.search(title)
         first_letter = (match.group() if match else None) or title[0]
         dest_path = os.path.join(destdir, first_letter.upper(), title)
         if not os.path.exists(dest_path):
