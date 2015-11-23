@@ -37,7 +37,8 @@ def filter_content(query, lang, tag, content_type, offset, limit):
                                     content_type=content_type,
                                     offset=offset,
                                     limit=limit)
-    return [metadata.Meta(meta) for meta in raw_metas]
+    return [metadata.Meta(request.app.supervisor, meta.path, data=meta)
+            for meta in raw_metas]
 
 
 @roca_view('library/content_list', 'library/_content_list', template_func=template)
