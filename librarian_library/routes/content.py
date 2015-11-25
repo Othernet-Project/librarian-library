@@ -36,7 +36,7 @@ def filter_content(query, lang, content_type, offset, limit):
                                     content_type=content_type,
                                     offset=offset,
                                     limit=limit)
-    return [metadata.Meta(request.app.supervisor, meta.path, data=meta)
+    return [metadata.Meta(request.app.supervisor, meta['path'], data=meta)
             for meta in raw_metas]
 
 
