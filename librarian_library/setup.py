@@ -13,6 +13,9 @@ from .forms import get_language_form, SetupDateTimeForm, SetupImportContentForm
 from .importer import import_content
 
 
+IMPORT_TASK_KEY = 'import_tasks'
+
+
 def is_language_invalid():
     supervisor = request.app.supervisor
     lang_code = supervisor.exts.setup.get('language')
@@ -61,6 +64,16 @@ def get_old_contentdirs():
 
 
 def has_old_content():
+    task_ids = request.app.config.get(IMPORT_TASK_KEY, [])
+    if task_ids:
+        tasks = request.app.supervisor.exts.tasks
+        healthy = lambda x: tasks.get_status(x) in (tasks.QUEUED,
+                                                    tasks.PROCESSING)
+        if any([healthy(tid) for tid in task_ids]):
+            return False
+        # delete finished task ids
+        request.app.config.pop(IMPORT_TASK_KEY, None)
+
     return any([os.path.exists(contentdir) and os.listdir(contentdir)
                 for contentdir in get_old_contentdirs()])
 
@@ -74,6 +87,18 @@ def setup_import_content_form():
     return dict(form=SetupImportContentForm())
 
 
+def import_task(srcdir, destdir, meta_filenames, fsal, notifications,
+                notifications_db):
+    import_content(srcdir,
+                   destdir,
+                   meta_filenames,
+                   fsal,
+                   notifications,
+                   notifications_db)
+    # even when importing, upon completion old content folder has to be deleted
+    delete_old_content(srcdir)
+
+
 def setup_import_content():
     form = SetupImportContentForm(request.forms)
     if not form.is_valid():
@@ -81,14 +106,23 @@ def setup_import_content():
 
     old_contentdirs = get_old_contentdirs()
     if form.processed_data['chosen_action'] == form.IMPORT:
+        tasks = request.app.supervisor.exts.tasks
         fsal = request.app.supervisor.exts.fsal
+        notifications = request.app.supervisor.exts.notifications
+        notifications_db = request.app.supervisor.exts.databases.notifications
         meta_filenames = request.app.config['library.metadata']
         destdir = request.app.config['library.legacy_destination']
+        import_task_ids = []
         for srcdir in old_contentdirs:
-            import_content(srcdir, destdir, fsal, meta_filenames)
-            # even when importing, upon completion old content folder has to be
-            # deleted
-            delete_old_content(srcdir)
+            args = (srcdir,
+                    destdir,
+                    meta_filenames,
+                    fsal,
+                    notifications,
+                    notifications_db)
+            task_id = tasks.schedule(import_task, args=args)
+            import_task_ids.append(task_id)
+        request.app.config[IMPORT_TASK_KEY] = import_task_ids
     elif form.processed_data['chosen_action'] == form.IGNORE:
         for contentdir in old_contentdirs:
             delete_old_content(contentdir)

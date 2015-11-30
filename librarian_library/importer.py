@@ -4,6 +4,7 @@ import os
 import re
 import uuid
 
+import gevent
 import scandir
 
 from bottle_utils.common import unicode, to_bytes, to_unicode
@@ -14,7 +15,7 @@ FIRST_CHAR = re.compile(r'\w{1}', re.UNICODE)
 MAX_TITLE_LENGTH = 255
 
 
-def find_content_dirs(basedir, meta_filenames):
+def find_content_dirs(basedir, meta_filenames, sleep_interval=0.01):
     for entry in scandir.scandir(basedir):
         if entry.is_dir():
             for child in find_content_dirs(entry.path, meta_filenames):
@@ -26,6 +27,8 @@ def find_content_dirs(basedir, meta_filenames):
                 # when it resumes, abort exploration of the current folder
                 # since it got removed in the meantime
                 break
+    # force context switch
+    gevent.sleep(sleep_interval)
 
 
 def get_random_title():
@@ -74,7 +77,8 @@ def delete_old_meta(path, meta_filenames):
                 os.remove(old_meta_path)
 
 
-def import_content(srcdir, destdir, fsal, meta_filenames):
+def import_content(srcdir, destdir, meta_filenames, fsal, notifications,
+                   notifications_db):
     """Discover content directories under ``srcdir`` using the first generation
     folder structure and copy them into ``destdir``, while dropping the old
     nested structure and putting them into a single folder which name is
@@ -116,4 +120,6 @@ def import_content(srcdir, destdir, fsal, meta_filenames):
             # the event
             added += 1
 
-    logging.info("{0} content items imported from {1}.".format(added, srcdir))
+    success_msg = "{0} content items imported from {1}.".format(added, srcdir)
+    logging.info(success_msg)
+    notifications.send(success_msg, db=notifications_db)
