@@ -80,6 +80,10 @@ def import_content(srcdir, destdir, fsal, meta_filenames):
     nested structure and putting them into a single folder which name is
     generated from the slugified title of the content."""
     srcdir = os.path.abspath(srcdir)
+    if not os.path.exists(srcdir):
+        logging.info("Content directory: {0} does not exist.".format(srcdir))
+        return
+
     logging.info("Starting content import of {0}".format(srcdir))
     added = 0
     for src_path in find_content_dirs(srcdir, meta_filenames):
