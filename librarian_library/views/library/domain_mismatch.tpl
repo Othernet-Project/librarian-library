@@ -11,7 +11,7 @@
     ## Translators, message shown to users when they try to access a domain
     ## (e.g., google.com) while connected to Outernet receiver through WiFi.
     ## {domain} is a placeholder.
-    ${_('{domain} does not exist on Outernet.').format(domain=h.attr_escape(hostname))}
+    ${_('{domain} does not exist on Outernet.').format(domain=h.html_escape(hostname))}
 </p>
 <p>
     ## Translators, message shown to users when they try to access a domain
