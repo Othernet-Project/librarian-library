@@ -12,7 +12,7 @@
         % elif query:
             ## Translators, used as note on library page when search does not
             ## return anything {terms} is a placeholder, do not translate
-            ${_(u"There are no search results for '{terms}'").format(terms=query)}
+            ${_(u"There are no search results for '{terms}'").format(terms=h.attr_escape(query))}
             ## Translators, used as label for button that clears search results
             ${self.search_clear(_('Clear'))}
         % elif chosen_content_type:
@@ -36,7 +36,7 @@
     <p class="library-item search-keyword">
         ## Translators, used as note on library page when showing search
         ## results, {term} represents the text typed in by user
-        ${_(u"Showing search results for '{term}'").format(term=query)}
+        ${_(u"Showing search results for '{term}'").format(term=h.attr_escape(query))}
         ## Translators, used as label for button that clears search results
         ${self.search_clear(_('Clear'))}
     </p>
@@ -47,7 +47,7 @@
         content_url = i18n_url('files:path', path=meta.path)
     %>
 
-    <li class="library-item ${'library-partner' if meta.is_partner else ''} ${'library-sponsored' if meta.is_sponsored else ''} ${'library-has-cover' if meta.cover else ''}" data-id="${meta.path}">
+    <li class="library-item ${'library-partner' if meta.is_partner else ''} ${'library-sponsored' if meta.is_sponsored else ''} ${'library-has-cover' if meta.cover else ''}" data-id="${meta.path | h.urlquote}">
 
     <h2 class="library-item-title${ ' library-item-cover' if meta.cover else ''}"${th.i18n_attrs(meta.lang)}
         % if meta.cover:
@@ -76,7 +76,7 @@
             ## Translators, appears as label for the list of content keywords
             <span class="label">${_('Topics:')}</span>
             % for kw in meta.keywords.split(','):
-                <a href="${i18n_url('content:list', q=kw)}" class="list-item-keyword">${kw.strip()}</a>
+                <a href="${i18n_url('content:list', q=kw)}" class="list-item-keyword">${kw.strip() | h}</a>
             % endfor
         </div>
     % endif
