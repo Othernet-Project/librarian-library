@@ -12,7 +12,7 @@
         % elif query:
             ## Translators, used as note on library page when search does not
             ## return anything {terms} is a placeholder, do not translate
-            ${_("There are no search results for '{terms}'").format(terms=query)}
+            ${_(u"There are no search results for '{terms}'").format(terms=query)}
             ## Translators, used as label for button that clears search results
             ${self.search_clear(_('Clear'))}
         % elif chosen_content_type:
@@ -36,7 +36,7 @@
     <p class="library-item search-keyword">
         ## Translators, used as note on library page when showing search
         ## results, {term} represents the text typed in by user
-        ${_("Showing search results for '{term}'").format(term=query)}
+        ${_(u"Showing search results for '{term}'").format(term=query)}
         ## Translators, used as label for button that clears search results
         ${self.search_clear(_('Clear'))}
     </p>
