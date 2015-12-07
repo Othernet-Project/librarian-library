@@ -85,16 +85,16 @@ def import_content(srcdir, destdir, meta_filenames, fsal, notifications,
     generated from the slugified title of the content."""
     srcdir = os.path.abspath(srcdir)
     if not os.path.exists(srcdir):
-        logging.info("Content directory: {0} does not exist.".format(srcdir))
+        logging.info(u"Content directory: {0} does not exist.".format(srcdir))
         return
 
-    logging.info("Starting content import of {0}".format(srcdir))
+    logging.info(u"Starting content import of {0}".format(srcdir))
     added = 0
     for src_path in find_content_dirs(srcdir, meta_filenames):
         meta = read_meta(src_path, meta_filenames)
         if not meta:
-            logging.error("Content import of {0} skipped. No valid metadata "
-                          "was found.")
+            logging.error(u"Content import of {0} skipped. No valid metadata "
+                          "was found.".format(src_path))
             continue  # metadata couldn't be found or read, skip this item
         # process and save the found metadata
         upgrade_meta(meta)
@@ -113,7 +113,7 @@ def import_content(srcdir, destdir, meta_filenames, fsal, notifications,
         if not fsal.exists(dest_path, unindexed=True):
             (success, error) = fsal.transfer(src_path, dest_path)
             if not success:
-                logging.error("Content import of {0} failed with "
+                logging.error(u"Content import of {0} failed with "
                               "{1}".format(src_path, error))
                 continue
             # adding to database will happen when we're notified by fsal about
