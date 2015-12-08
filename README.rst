@@ -24,6 +24,12 @@ To enable this component, add it to the list of components in librarian_'s
     +components =
         librarian_library
 
+And to make the menuitem show up::
+
+    [menu]
+    +main =
+        library
+
 Configuration
 -------------
 
