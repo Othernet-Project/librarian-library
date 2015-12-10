@@ -10,12 +10,8 @@ file that comes with the source code, or http://www.gnu.org/licenses/gpl.txt.
 
 import os
 
-from urlparse import urljoin
-
 from bottle import request
 from bottle_utils.common import unicode
-from bottle_utils.html import set_qparam
-from bottle_utils.i18n import i18n_url
 
 from librarian_content.library.archive import Archive
 from librarian_core.contrib.cache.decorators import cached
@@ -32,22 +28,6 @@ def open_archive(config=None):
                          request.db.content,
                          contentdir=conf['library.contentdir'],
                          meta_filenames=conf['library.metadata'])
-
-
-def get_content_url(root_url, domain):
-    archive = open_archive()
-    matched_contents = archive.content_for_domain(domain)
-    try:
-        # as multiple matches are possible, pick the first one
-        meta = matched_contents[0]
-    except IndexError:
-        # invalid content domain
-        path = 'you-are-on-outernet?wanted={}'.format(domain)
-    else:
-        path = i18n_url('opener:detail')
-        path += set_qparam(path=meta.path).to_qs()
-
-    return urljoin(root_url, path)
 
 
 @template_helper
