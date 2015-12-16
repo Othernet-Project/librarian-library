@@ -32,15 +32,21 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
     };
   };
   libraryList.on('click', libraryItemLinkSelector, function(e) {
-    var link, path, ref, targetCtype, url;
+    var link, path, ref, targetCtype, type, url;
     link = $(this);
     ref = getOpenerParams(link), path = ref.path, targetCtype = ref.targetCtype;
+    type = targetCtype === 'generic' ? 'folder' : targetCtype;
+    ($(window)).trigger('opener-click', [
+      {
+        path: path,
+        type: type
+      }
+    ]);
     if (targetCtype === 'generic') {
       return;
     }
     e.preventDefault();
     url = getOpenerUrl(targetCtype, path);
-    console.log(url);
     $.modalContent(url, {
       fullScreen: true
     });

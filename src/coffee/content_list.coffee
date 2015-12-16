@@ -40,12 +40,15 @@
     link = $ this
     {path, targetCtype} = getOpenerParams link
 
+    # Emit opener event
+    type = if targetCtype is 'generic' then 'folder' else targetCtype
+    ($ window).trigger 'opener-click', [{path: path, type: type}]
+
     if targetCtype is 'generic'
       return
 
     e.preventDefault()
     url = getOpenerUrl targetCtype, path
-    console.log url
     $.modalContent url, fullScreen: true
     return
 
