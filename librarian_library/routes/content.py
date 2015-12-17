@@ -31,13 +31,11 @@ def content_count(query, lang, content_type):
 @cached(prefix='content', timeout=300)
 def filter_content(query, lang, content_type, offset, limit):
     archive = open_archive()
-    raw_metas = archive.get_content(terms=query,
-                                    lang=lang,
-                                    content_type=content_type,
-                                    offset=offset,
-                                    limit=limit)
-    return [metadata.Meta(request.app.supervisor, meta['path'], data=meta)
-            for meta in raw_metas]
+    return archive.get_content(terms=query,
+                               lang=lang,
+                               content_type=content_type,
+                               offset=offset,
+                               limit=limit)
 
 
 @roca_view('library/content_list', 'library/_content_list', template_func=template)
@@ -60,11 +58,13 @@ def content_list():
     item_count = content_count(query, lang, content_type)
     pager = Paginator(item_count, page, per_page)
     offset, limit = pager.items
-    metas = filter_content(query,
-                           lang,
-                           content_type,
-                           offset=offset,
-                           limit=limit)
+    raw_metas = filter_content(query,
+                               lang,
+                               content_type,
+                               offset=offset,
+                               limit=limit)
+    metas = [metadata.Meta(request.app.supervisor, meta['path'], data=meta)
+             for meta in raw_metas]
     return dict(metadata=metas,
                 pager=pager,
                 vals=request.params.decode(),
