@@ -26,7 +26,6 @@ def open_archive(config=None):
     return Archive.setup(conf['library.backend'],
                          request.app.supervisor.exts.fsal,
                          request.db.content,
-                         contentdir=conf['library.contentdir'],
                          meta_filenames=conf['library.metadata'])
 
 
