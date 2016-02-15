@@ -18,7 +18,7 @@ IMPORT_TASK_KEY = 'import_tasks'
 
 def is_language_invalid():
     supervisor = request.app.supervisor
-    lang_code = supervisor.exts.setup.get('language')
+    lang_code = supervisor.exts.setup.get('general.default_language')
     return lang_code not in get_enabled_locales()
 
 
@@ -34,7 +34,8 @@ def setup_language():
         return dict(successful=False, form=form)
 
     lang = form.processed_data['language']
-    request.app.supervisor.exts.setup.append({'language': lang})
+    values = {'general.default_language': lang}
+    request.app.supervisor.exts.setup.append(values)
     set_default_locale(lang)
     set_current_locale(lang)
     return dict(successful=True, language=lang)
