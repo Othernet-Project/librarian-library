@@ -36,11 +36,14 @@ def initialize(supervisor):
     default_language = supervisor.config.get('i18n.default_locale', 'en')
     locales = supervisor.config.get('i18n.locales', ['en'])
     ui_languages = [(code, name) for code, name in LANGS if code in locales]
+    help_text = _("Interface language that is initially selected for all "
+                  "users. Users can change it independently later.")
     supervisor.exts.settings.add_group('general', _("General settings"))
     supervisor.exts.settings.add_field(name='default_language',
                                        group='general',
                                        label=_("Default language"),
                                        value_type='select',
+                                       help_text=help_text,
                                        required=True,
                                        default=default_language,
                                        choices=ui_languages)
