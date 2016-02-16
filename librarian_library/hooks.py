@@ -8,7 +8,7 @@ from .menuitems import LibraryMenuItem
 
 
 def settings_saved(settings):
-    set_default_locale(settings['general.language'])
+    set_default_locale(settings['general.default_language'])
 
 
 def initialize(supervisor):
